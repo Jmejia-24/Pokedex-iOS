@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseCore
 
 @UIApplicationMain final class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -18,6 +19,7 @@ import UIKit
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = app.navigationController
         window?.makeKeyAndVisible()
+        FirebaseApp.configure()
         
         app.start()
         return true
