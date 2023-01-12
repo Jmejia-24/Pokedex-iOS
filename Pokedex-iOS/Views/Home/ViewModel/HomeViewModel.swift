@@ -9,8 +9,9 @@ import UIKit
 import Combine
 
 protocol HomeViewModelRepresentable {
-    func loadData()
     var regionListSubject: PassthroughSubject<[Region], Failure> { get }
+    func loadData()
+    func didTapItem(model: Region)
 }
 
 final class HomeViewModel<R: AppRouter> {
@@ -26,6 +27,10 @@ final class HomeViewModel<R: AppRouter> {
 }
 
 extension HomeViewModel: HomeViewModelRepresentable {
+    func didTapItem(model: Region) {
+        router?.process(route: .showPokedexes(model: model))
+    }
+    
     func loadData() {
         let recieved = { (response: RegionResponse) -> Void in
             DispatchQueue.main.async { [unowned self] in

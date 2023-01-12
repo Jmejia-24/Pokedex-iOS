@@ -12,10 +12,17 @@ protocol HomeListStore {
     func readRegionList() -> Future<RegionResponse, Failure>
 }
 
+protocol PokedexListStore {
+    func readPokedex(region: Region) -> Future<PokedexResponse, Failure>
+}
+
+protocol PokemonListStore {
+    func readPokemons(pokedex: Pokedex) -> Future<PokemonResponse, Failure>
+}
+
 final class APIManager {
     
-    private func request<T>(for path: String) -> Future<T, Failure> where T : Codable {
-        let stringURL = "https://pokeapi.co/api/v2/\(path)"
+    private func request<T>(for stringURL: String) -> Future<T, Failure> where T : Codable {
         return Future { promise in
             
             guard let url = URL(string: stringURL) else {
@@ -40,7 +47,20 @@ final class APIManager {
 
 extension APIManager: HomeListStore {
     func readRegionList() -> Future<RegionResponse, Failure> {
-        let urlString = "region"
-        return request(for: urlString)
+        let url = "https://pokeapi.co/api/v2/region"
+        return request(for: url)
     }
 }
+
+extension APIManager: PokedexListStore {
+    func readPokedex(region: Region) -> Future<PokedexResponse, Failure> {
+        return request(for: region.url)
+    }
+}
+
+extension APIManager: PokemonListStore {
+    func readPokemons(pokedex: Pokedex) -> Future<PokemonResponse, Failure> {
+        return request(for: pokedex.url)
+    }
+}
+

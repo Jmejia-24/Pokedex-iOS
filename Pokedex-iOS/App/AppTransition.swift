@@ -11,6 +11,8 @@ enum AppTransition {
     
     case showLogIn
     case showHome
+    case showPokedexes(model: Region)
+    case showPokemons(model: Pokedex)
     
     var hasState: Bool {
         /// If some transitions need to have state - perform case match logic here
@@ -22,6 +24,8 @@ enum AppTransition {
         switch self {
         case .showLogIn: return LogInCoordinator(router: router)
         case .showHome: return HomeCoordinator(router: router)
+        case .showPokedexes(let model): return PokedexListCoordinator(model: model, router: router)
+        case .showPokemons(let model): return PokemonListCoordinator(model: model, router: router)
         }
     }
 }
@@ -32,6 +36,8 @@ extension AppTransition: Hashable {
         switch self {
         case .showLogIn: return "showLogIn"
         case .showHome: return "showHome"
+        case .showPokemons: return "showPokemons"
+        case .showPokedexes: return "showPokedexesJ"
         }
     }
     

@@ -1,26 +1,26 @@
 //
-//  HomeViewController.swift
+//  PokedexListViewController.swift
 //  Pokedex-iOS
 //
-//  Created by Byron Mejia on 1/11/23.
+//  Created by Byron Mejia on 1/12/23.
 //
 
 import UIKit
 import Combine
 
-final class HomeViewController: UICollectionViewController {
+final class PokedexListViewController: UICollectionViewController {
     
     private enum Section: CaseIterable {
         case main
     }
     
-    private typealias DataSource = UICollectionViewDiffableDataSource<Section, Region>
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Region>
+    private typealias DataSource = UICollectionViewDiffableDataSource<Section, Pokedex>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Pokedex>
     
     private var subscription: AnyCancellable?
-    private let viewModel: HomeViewModelRepresentable
+    private let viewModel: PokedexListViewModelRepresentable
     
-    init(viewModel: HomeViewModelRepresentable) {
+    init(viewModel: PokedexListViewModelRepresentable) {
         self.viewModel = viewModel
         super.init(collectionViewLayout: Self.generateLayout())
     }
@@ -37,54 +37,53 @@ final class HomeViewController: UICollectionViewController {
     
     private func setUI() {
         view.backgroundColor = .white
-        navigationItem.setHidesBackButton(true, animated: false)
-        title = "Home"
+        title = "Pokedexes"
         viewModel.loadData()
     }
     
     private func bindUI() {
-        subscription = viewModel.regionListSubject.sink { [unowned self] completion in
+        subscription = viewModel.pokedexListSubject.sink { [unowned self] completion in
             switch completion {
             case .finished:
                 print("Received completion in VC", completion)
             case .failure(let error):
                 presentAlert(with: error)
             }
-        } receiveValue: { [unowned self] regions in
-            applySnapshot(regions: regions)
+        } receiveValue: { [unowned self] pokedexes in
+            applySnapshot(pokedexes: pokedexes)
         }
     }
     
     // MARK: Diffable data source
     
-    private let registerRegionCell = UICollectionView.CellRegistration<UICollectionViewListCell, Region> { cell, indexPath, region in
+    private let registerPokedexCell = UICollectionView.CellRegistration<UICollectionViewListCell, Pokedex> { cell, indexPath, pokedex in
         var configuration = cell.defaultContentConfiguration()
-        configuration.text = region.name.capitalized
+        configuration.text = pokedex.name.capitalized
         
         cell.contentConfiguration = configuration
     }
     
     private lazy var dataSource: DataSource = {
         let dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, item -> UICollectionViewCell in
-            collectionView.dequeueConfiguredReusableCell(using: self.registerRegionCell, for: indexPath, item: item)
+            collectionView.dequeueConfiguredReusableCell(using: self.registerPokedexCell, for: indexPath, item: item)
         }
         return dataSource
     }()
     
-    private func applySnapshot(regions: [Region]) {
+    private func applySnapshot(pokedexes: [Pokedex]) {
         var snapshot = Snapshot()
         snapshot.appendSections(Section.allCases)
-        Section.allCases.forEach { snapshot.appendItems(regions, toSection: $0) }
+        Section.allCases.forEach { snapshot.appendItems(pokedexes, toSection: $0) }
         dataSource.apply(snapshot)
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let region = dataSource.itemIdentifier(for: indexPath) else { return }
-        viewModel.didTapItem(model: region)
+        guard let pokedex = dataSource.itemIdentifier(for: indexPath) else { return }
+        viewModel.didTapItem(model: pokedex)
     }
 }
 
-extension HomeViewController {
+extension PokedexListViewController {
     static private func generateLayout() -> UICollectionViewCompositionalLayout {
         var listConfig = UICollectionLayoutListConfiguration(appearance: .plain)
         listConfig.backgroundColor = .white
