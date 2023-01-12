@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import Combine
 
 class LogInViewController: UIViewController {
 
+    private var subscription: AnyCancellable?
     private let viewModel: LogInViewModelRepresentable
     
     init(viewModel: LogInViewModelRepresentable) {
@@ -22,6 +24,22 @@ class LogInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .gray
+        setUI()
+        bindUI()
+    }
+    
+    private func setUI() {
+        view.backgroundColor = .white
+    }
+    
+    private func bindUI() {
+        subscription = viewModel.errorSubject.sink { _ in
+        } receiveValue: { [unowned self] error in
+            presentAlert(with: error)
+        }
+    }
+    
+    @IBAction func didTapGoogleButton(_ sender: Any) {
+        viewModel.googleSignIn(self)
     }
 }

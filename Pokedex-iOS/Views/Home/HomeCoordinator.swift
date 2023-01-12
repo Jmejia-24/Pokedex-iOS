@@ -1,5 +1,5 @@
 //
-//  LogInCoordinator.swift
+//  HomeCoordinator.swift
 //  Pokedex-iOS
 //
 //  Created by Byron Mejia on 1/11/23.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-final class LogInCoordinator<R: AppRouter> {
+final class HomeCoordinator<R: AppRouter> {
     let router: R
     
     private lazy var primaryViewController: UIViewController = {
-        let viewModel = LogInViewModel<R>()
+        let viewModel = HomeViewModel<R>()
         viewModel.router = router
-        let viewController = LogInViewController(viewModel: viewModel)
+        let viewController = HomeViewController(viewModel: viewModel)
         return viewController
     }()
     
@@ -22,7 +22,7 @@ final class LogInCoordinator<R: AppRouter> {
     }
 }
 
-extension LogInCoordinator: Coordinator {
+extension HomeCoordinator: Coordinator {
     func start() {
         if router.navigationController.viewControllers.isEmpty {
             router.navigationController.pushViewController(primaryViewController, animated: false)

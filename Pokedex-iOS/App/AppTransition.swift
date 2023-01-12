@@ -10,6 +10,7 @@ import Foundation
 enum AppTransition {
     
     case showLogIn
+    case showHome
     
     var hasState: Bool {
         /// If some transitions need to have state - perform case match logic here
@@ -20,6 +21,7 @@ enum AppTransition {
     func coordinatorFor<R: AppRouter>(router: R) -> Coordinator {
         switch self {
         case .showLogIn: return LogInCoordinator(router: router)
+        case .showHome: return HomeCoordinator(router: router)
         }
     }
 }
@@ -29,6 +31,7 @@ extension AppTransition: Hashable {
     var identifier: String {
         switch self {
         case .showLogIn: return "showLogIn"
+        case .showHome: return "showHome"
         }
     }
     

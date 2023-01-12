@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseCore
+import GoogleSignIn
 
 @UIApplicationMain final class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -14,12 +15,16 @@ import FirebaseCore
     private let app = App()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = app.navigationController
         window?.makeKeyAndVisible()
         FirebaseApp.configure()
+        let clientID = FirebaseApp.app()?.options.clientID
+        let config = GIDConfiguration(clientID: clientID ?? "")
+        GIDSignIn.sharedInstance.configuration = config
+        
+        AppStyle.configureAppearance()
         
         app.start()
         return true
