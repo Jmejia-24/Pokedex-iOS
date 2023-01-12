@@ -14,7 +14,7 @@ final class App {
 
 extension App: Coordinator {
     func start() {
-        process(route: .showLogIn)
+        process(route: .showHome)
     }
 }
 
