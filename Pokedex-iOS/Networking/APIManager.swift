@@ -20,6 +20,10 @@ protocol PokemonListStore {
     func readPokemons(pokedex: Pokedex) -> Future<PokemonResponse, Failure>
 }
 
+protocol PokemonDetailStore {
+    func readPokemonDetails(pokemon: Pokemon) -> Future<PokemonDetailBase, Failure>
+}
+
 final class APIManager {
     
     private func request<T>(for stringURL: String) -> Future<T, Failure> where T : Codable {
@@ -43,6 +47,19 @@ final class APIManager {
             task.resume()
         }
     }
+    
+    static func fetchImage(imageURL: String) async throws -> UIImage {
+        guard let url = URL(string: imageURL) else { throw Failure.urlConstructError }
+        
+        do {
+            let (data, response) = try await URLSession.shared.data(from: url)
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode,
+                  let image = UIImage(data: data), 200...299 ~= statusCode else { throw Failure.statusCode }
+            return image
+        } catch {
+            throw error
+        }
+    }
 }
 
 extension APIManager: HomeListStore {
@@ -64,3 +81,8 @@ extension APIManager: PokemonListStore {
     }
 }
 
+extension APIManager: PokemonDetailStore {
+    func readPokemonDetails(pokemon: Pokemon) -> Future<PokemonDetailBase, Failure> {
+        return request(for: pokemon.url)
+    }
+}

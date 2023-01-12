@@ -10,6 +10,7 @@ import Combine
 
 protocol PokemonListViewModelRepresentable {
     func loadData()
+    func didTapItem(model: Pokemon)
     var pokemonListSubject: PassthroughSubject<[PokemonEntry], Failure> { get }
 }
 
@@ -28,10 +29,14 @@ final class PokemonListViewModel<R: AppRouter> {
 }
 
 extension PokemonListViewModel: PokemonListViewModelRepresentable {
+    func didTapItem(model: Pokemon) {
+        router?.process(route: .showPokemonDetail(model: model))
+    }
+    
     func loadData() {
         let recieved = { (response: PokemonResponse) -> Void in
             DispatchQueue.main.async { [unowned self] in
-                pokemonListSubject.send( response.pokemonEntry)
+                pokemonListSubject.send(response.pokemonEntry)
             }
         }
         

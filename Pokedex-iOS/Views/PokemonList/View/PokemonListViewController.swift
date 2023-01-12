@@ -78,8 +78,8 @@ final class PokemonListViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let region = dataSource.itemIdentifier(for: indexPath) else { return }
-        
+        guard let pokemon = dataSource.itemIdentifier(for: indexPath) else { return }
+        viewModel.didTapItem(model: pokemon.pokemon)
     }
 }
 
