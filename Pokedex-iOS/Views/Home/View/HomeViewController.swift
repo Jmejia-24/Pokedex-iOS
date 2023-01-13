@@ -36,9 +36,9 @@ final class HomeViewController: UICollectionViewController {
     }
     
     private func setUI() {
-        view.backgroundColor = .white
         navigationItem.setHidesBackButton(true, animated: false)
         title = "Home"
+        safeAreaLayoutGuideetSafe()
         viewModel.loadData()
     }
     
@@ -87,7 +87,6 @@ final class HomeViewController: UICollectionViewController {
 extension HomeViewController {
     static private func generateLayout() -> UICollectionViewCompositionalLayout {
         var listConfig = UICollectionLayoutListConfiguration(appearance: .plain)
-        listConfig.backgroundColor = .white
         return UICollectionViewCompositionalLayout.list(using: listConfig)
     }
 }

@@ -29,7 +29,7 @@ class LogInViewController: UIViewController {
     }
     
     private func setUI() {
-        view.backgroundColor = .white
+        
     }
     
     private func bindUI() {

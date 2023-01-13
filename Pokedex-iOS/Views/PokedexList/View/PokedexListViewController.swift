@@ -36,8 +36,8 @@ final class PokedexListViewController: UICollectionViewController {
     }
     
     private func setUI() {
-        view.backgroundColor = .white
         title = "Pokedexes"
+        safeAreaLayoutGuideetSafe()
         viewModel.loadData()
     }
     
@@ -86,7 +86,6 @@ final class PokedexListViewController: UICollectionViewController {
 extension PokedexListViewController {
     static private func generateLayout() -> UICollectionViewCompositionalLayout {
         var listConfig = UICollectionLayoutListConfiguration(appearance: .plain)
-        listConfig.backgroundColor = .white
         return UICollectionViewCompositionalLayout.list(using: listConfig)
     }
 }

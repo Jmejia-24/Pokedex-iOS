@@ -31,13 +31,23 @@ final class PokemonListViewController: UICollectionViewController {
         let buttonItem = UIBarButtonItem(title: "Add Team", primaryAction: UIAction { [unowned self] _ in
             tapAddTeamButton()
         })
+        buttonItem.tintColor = .blue
+        return buttonItem
+    }()
+    
+    private lazy var doneButtonItem: UIBarButtonItem = {
+        let buttonItem = UIBarButtonItem(title: "Done", primaryAction: UIAction { [unowned self] _ in
+            tapDoneButton()
+        })
+        buttonItem.tintColor = .systemGreen
         return buttonItem
     }()
     
     private lazy var cancelButtonItem: UIBarButtonItem = {
         let buttonItem = UIBarButtonItem(title: "Cancel", primaryAction: UIAction { [unowned self] _ in
-            tapCancelButton()
+            finishAddingTeam()
         })
+        buttonItem.tintColor = .red
         return buttonItem
     }()
     
@@ -56,13 +66,16 @@ final class PokemonListViewController: UICollectionViewController {
         bindUI()
     }
     
+    
     private func setUI() {
-        view.backgroundColor = .white
         title = "Pókemon"
+
         viewModel.loadData()
-        navigationItem.rightBarButtonItems = [addTeamButtonItem, cancelButtonItem]
+        navigationItem.rightBarButtonItems = [addTeamButtonItem, doneButtonItem, cancelButtonItem]
         cancelButtonItem.isHidden = true
+        doneButtonItem.isHidden = true
         collectionView.register(PokemonCollectionViewCell.self)
+        safeAreaLayoutGuideetSafe()
     }
     
     private func bindUI() {
@@ -79,27 +92,50 @@ final class PokemonListViewController: UICollectionViewController {
     }
     
     private func tapAddTeamButton() {
-        currentMode = currentMode == .addingTeam ? .notAddingTeam : .addingTeam
-        switch currentMode {
-        case .addingTeam:
-            title = ""
-            addTeamButtonItem.title = "Done"
-            cancelButtonItem.isHidden = false
-        case .notAddingTeam:
-            title = "Pókemon"
-            addTeamButtonItem.title = "Add Team"
-            cancelButtonItem.isHidden = true
-        }
+        currentMode = .addingTeam
+        title = "Team"
+        cancelButtonItem.isHidden = false
+        doneButtonItem.isHidden = false
+        addTeamButtonItem.isHidden = true
         reloadData()
     }
     
-    private func tapCancelButton() {
+    private func tapDoneButton() {
+        addNameTeam()
+    }
+    
+    private func finishAddingTeam() {
+        currentMode = .notAddingTeam
         title = "Pókemon"
         viewModel.selectedPokemons.removeAll()
+        
         currentMode = .notAddingTeam
         cancelButtonItem.isHidden = true
-        addTeamButtonItem.title = "Add Team"
+        doneButtonItem.isHidden = true
+        addTeamButtonItem.isHidden = false
         reloadData()
+    }
+    
+    private func addNameTeam() {
+        if viewModel.selectedPokemons.count >= 3 && viewModel.selectedPokemons.count <= 6 {
+            UIAlertController.Builder()
+                .withTitle("Add Team Title")
+                .withTextField(true)
+                .withButton(title: "Save team") { [unowned self] alert in
+                    guard let title = alert.textFields?.first?.text,
+                          !title.isEmpty else {
+                        presentAlert(with: "Title cannot be empty")
+                        return
+                    }
+                    
+                    print("Title team: \(title)")
+                    
+                    finishAddingTeam()
+                }
+                .present(in: self)
+        } else {
+            presentAlert(with: "The team must contain 3 to 6 pokemons")
+        }
     }
     
     // MARK: Diffable data source
@@ -151,8 +187,6 @@ final class PokemonListViewController: UICollectionViewController {
 extension PokemonListViewController {
     static private func generateLayout() -> UICollectionViewCompositionalLayout {
         var listConfig = UICollectionLayoutListConfiguration(appearance: .plain)
-        listConfig.backgroundColor = .white
         return UICollectionViewCompositionalLayout.list(using: listConfig)
     }
-    
 }

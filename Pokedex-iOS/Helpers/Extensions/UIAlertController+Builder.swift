@@ -77,4 +77,13 @@ extension UIViewController {
             .withButton(title: "OK")
             .present(in: self)
     }
+    
+    func presentAlert(with message: String) {
+        UIAlertController
+            .Builder()
+            .withTitle("Pokedex")
+            .withMessage(message)
+            .withButton(title: "OK")
+            .present(in: self)
+    }
 }
