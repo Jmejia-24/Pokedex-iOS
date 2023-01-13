@@ -17,6 +17,9 @@ final class PokemonListViewController: UICollectionViewController {
     private typealias DataSource = UICollectionViewDiffableDataSource<Section, PokemonEntry>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, PokemonEntry>
     
+    var selectedCells:[Int] = []
+    var pokemonModel = [PokemonEntry]()
+    
     private var subscription: AnyCancellable?
     private let viewModel: PokemonListViewModelRepresentable
     
@@ -37,8 +40,10 @@ final class PokemonListViewController: UICollectionViewController {
     
     private func setUI() {
         view.backgroundColor = .white
-        title = "Pokemos"
+        title = "Pókemon"
         viewModel.loadData()
+        navigationItem.rightBarButtonItem = editButtonItem
+        collectionView.allowsMultipleSelectionDuringEditing = true
     }
     
     private func bindUI() {
@@ -61,6 +66,17 @@ final class PokemonListViewController: UICollectionViewController {
         configuration.text = pokemonEntry.pokemon.name.capitalized
         
         cell.contentConfiguration = configuration
+        
+        let customAccessory = UICellAccessory.CustomViewConfiguration(
+          customView: UIImageView(image: UIImage(systemName: "checkmark.circle")),
+          placement: .trailing(displayed: .always))
+
+        cell.accessories = [.customView(configuration: customAccessory)]
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        collectionView.isEditing = editing
     }
     
     private lazy var dataSource: DataSource = {
@@ -79,8 +95,31 @@ final class PokemonListViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let pokemon = dataSource.itemIdentifier(for: indexPath) else { return }
-        viewModel.didTapItem(model: pokemon.pokemon)
+       
+        if !isEditing {
+            viewModel.didTapItem(model: pokemon.pokemon)
+        }
+        
+        else {
+            if self.selectedCells.contains(indexPath.item) {
+                var index = self.selectedCells.firstIndex(of: indexPath.item)
+                self.selectedCells.remove(at: index!)
+                
+            }
+            else {
+                self.selectedCells.append(indexPath.item)
+               
+              
+            }
+        }
+        
+        var snapshot = dataSource.snapshot()
+        snapshot.reloadItems([pokemon])
+//        let selectedData = pokemonModel[indexPath.item]
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
+    
+    
 }
 
 extension PokemonListViewController {
@@ -89,4 +128,5 @@ extension PokemonListViewController {
         listConfig.backgroundColor = .white
         return UICollectionViewCompositionalLayout.list(using: listConfig)
     }
+    
 }
