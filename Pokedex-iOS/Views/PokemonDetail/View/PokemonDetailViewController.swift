@@ -56,7 +56,8 @@ final class PokemonDetailViewController: UIViewController {
         
         titleLabel.text = pokemon.name.uppercased()
         numberLabel.text = "\(pokemon.id)"
-        descriptionLabel.text = pokemon.flavorTextEntries.first?.flavorText
+        let texts = pokemon.flavorTextEntries.filter { $0.language?.name == "en" }
+        descriptionLabel.text = texts.first?.flavorText
         typeLabel.text = pokemon.eggGroups.compactMap({ $0.name.capitalized }).joined(separator: ", ")
         
         Task {
