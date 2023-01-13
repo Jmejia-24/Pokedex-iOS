@@ -25,8 +25,6 @@ final class PokemonListViewController: UICollectionViewController {
     private var subscription: AnyCancellable?
     private var viewModel: PokemonListViewModelRepresentable
     
-    private var currentMode: Mode = .notAddingTeam
-    
     private lazy var addTeamButtonItem: UIBarButtonItem = {
         let buttonItem = UIBarButtonItem(title: "Add Team", primaryAction: UIAction { [unowned self] _ in
             tapAddTeamButton()
@@ -92,7 +90,7 @@ final class PokemonListViewController: UICollectionViewController {
     }
     
     private func tapAddTeamButton() {
-        currentMode = .addingTeam
+        viewModel.currentMode = .addingTeam
         title = "Team"
         cancelButtonItem.isHidden = false
         doneButtonItem.isHidden = false
@@ -105,11 +103,10 @@ final class PokemonListViewController: UICollectionViewController {
     }
     
     private func finishAddingTeam() {
-        currentMode = .notAddingTeam
+        viewModel.currentMode = .notAddingTeam
         title = "Pókemon"
         viewModel.selectedPokemons.removeAll()
         
-        currentMode = .notAddingTeam
         cancelButtonItem.isHidden = true
         doneButtonItem.isHidden = true
         addTeamButtonItem.isHidden = false
@@ -146,7 +143,7 @@ final class PokemonListViewController: UICollectionViewController {
             
             let isSelected = self.viewModel.selectedPokemons.contains(where: { $0.name == item.pokemon.name })
             
-            cell.performSelected(isSelected, for: self.currentMode)
+            cell.performSelected(isSelected, for: self.viewModel.currentMode)
             cell.configure(item.pokemon)
             
             return cell
@@ -170,7 +167,7 @@ final class PokemonListViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let pokemon = dataSource.itemIdentifier(for: indexPath) else { return }
        
-        switch currentMode {
+        switch viewModel.currentMode {
         case .addingTeam:
             if let index = viewModel.selectedPokemons.firstIndex(where: { $0.name == pokemon.pokemon.name }) {
                 viewModel.selectedPokemons.remove(at: index)
@@ -186,7 +183,7 @@ final class PokemonListViewController: UICollectionViewController {
 
 extension PokemonListViewController {
     static private func generateLayout() -> UICollectionViewCompositionalLayout {
-        var listConfig = UICollectionLayoutListConfiguration(appearance: .plain)
+        let listConfig = UICollectionLayoutListConfiguration(appearance: .plain)
         return UICollectionViewCompositionalLayout.list(using: listConfig)
     }
 }
