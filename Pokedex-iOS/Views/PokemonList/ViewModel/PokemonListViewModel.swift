@@ -12,6 +12,7 @@ protocol PokemonListViewModelRepresentable {
     func loadData()
     func didTapItem(model: Pokemon)
     var pokemonListSubject: PassthroughSubject<[PokemonEntry], Failure> { get }
+    var selectedPokemons: [Pokemon] { get set }
 }
 
 final class PokemonListViewModel<R: AppRouter> {
@@ -21,6 +22,8 @@ final class PokemonListViewModel<R: AppRouter> {
     private var cancellables = Set<AnyCancellable>()
     private let store: PokemonListStore
     private let pokedex: Pokedex
+    
+    var selectedPokemons = [Pokemon]()
     
     init(pokedex: Pokedex, store: PokemonListStore = APIManager()) {
         self.store = store

@@ -7,15 +7,38 @@
 
 import Foundation
 
-struct Pokemon: Codable, Hashable {
+struct Pokemon: Codable, Identifiable {
+    let id = UUID().uuidString
     let name: String
     let url: String
 }
 
-struct PokemonEntry: Codable, Hashable {
-    let pokemon: Pokemon
+extension Pokemon: Hashable {
+    static func == (lhs: Pokemon, rhs: Pokemon) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        return hasher.combine(id)
+    }
+}
 
+struct PokemonEntry: Codable, Identifiable {
+    let id = UUID().uuidString
+    var pokemon: Pokemon
+    var isSelected = false
+    
     enum CodingKeys: String, CodingKey {
         case pokemon = "pokemon_species"
+    }
+}
+
+extension PokemonEntry: Hashable {
+    static func == (lhs: PokemonEntry, rhs: PokemonEntry) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        return hasher.combine(id)
     }
 }

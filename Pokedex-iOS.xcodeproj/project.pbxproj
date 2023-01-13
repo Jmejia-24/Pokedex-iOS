@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C821BE1929712B1B0094D7F5 /* PokemonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C821BE1729712B1B0094D7F5 /* PokemonCollectionViewCell.swift */; };
+		C821BE1A29712B1B0094D7F5 /* PokemonCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C821BE1829712B1B0094D7F5 /* PokemonCollectionViewCell.xib */; };
+		C821BE1C29712E030094D7F5 /* UICollectionView+ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C821BE1B29712E030094D7F5 /* UICollectionView+ReusableView.swift */; };
 		C830BD2829705C1A003A52C4 /* PokemonDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C830BD2729705C1A003A52C4 /* PokemonDetailCoordinator.swift */; };
 		C830BD2A29705C26003A52C4 /* PokemonDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C830BD2929705C26003A52C4 /* PokemonDetailViewModel.swift */; };
 		C830BD2D29705C3B003A52C4 /* PokemonDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C830BD2B29705C3B003A52C4 /* PokemonDetailViewController.swift */; };
@@ -57,6 +60,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C821BE1729712B1B0094D7F5 /* PokemonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonCollectionViewCell.swift; sourceTree = "<group>"; };
+		C821BE1829712B1B0094D7F5 /* PokemonCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PokemonCollectionViewCell.xib; sourceTree = "<group>"; };
+		C821BE1B29712E030094D7F5 /* UICollectionView+ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+ReusableView.swift"; sourceTree = "<group>"; };
 		C830BD2729705C1A003A52C4 /* PokemonDetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonDetailCoordinator.swift; sourceTree = "<group>"; };
 		C830BD2929705C26003A52C4 /* PokemonDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonDetailViewModel.swift; sourceTree = "<group>"; };
 		C830BD2B29705C3B003A52C4 /* PokemonDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonDetailViewController.swift; sourceTree = "<group>"; };
@@ -119,6 +125,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C821BE1629712ADA0094D7F5 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				C821BE1729712B1B0094D7F5 /* PokemonCollectionViewCell.swift */,
+				C821BE1829712B1B0094D7F5 /* PokemonCollectionViewCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		C830BD2329705BE8003A52C4 /* PokemonDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -269,6 +284,7 @@
 				C8D0F4A7296FA64E00C5F74D /* Extensions */,
 				C8D0F4AA296FA9B600C5F74D /* AppStyle.swift */,
 				C830BD35297077AD003A52C4 /* ImageCacheStore.swift */,
+				C821BE1B29712E030094D7F5 /* UICollectionView+ReusableView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -321,6 +337,7 @@
 		C8D0F4B8296FCE2300C5F74D /* View */ = {
 			isa = PBXGroup;
 			children = (
+				C821BE1629712ADA0094D7F5 /* Cell */,
 				C8D0F4BE296FCF1300C5F74D /* PokemonListViewController.swift */,
 			);
 			path = View;
@@ -466,6 +483,7 @@
 				C8D0F464296F40D400C5F74D /* Assets.xcassets in Resources */,
 				C8D0F486296F7DEB00C5F74D /* GoogleService-Info.plist in Resources */,
 				C8D0F484296F438F00C5F74D /* LogInViewController.xib in Resources */,
+				C821BE1A29712B1B0094D7F5 /* PokemonCollectionViewCell.xib in Resources */,
 				C830BD2E29705C3B003A52C4 /* PokemonDetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -480,6 +498,8 @@
 				C8D0F4B3296FC45400C5F74D /* APIManager.swift in Sources */,
 				C830BD2829705C1A003A52C4 /* PokemonDetailCoordinator.swift in Sources */,
 				C8D0F480296F437400C5F74D /* LogInViewModel.swift in Sources */,
+				C821BE1929712B1B0094D7F5 /* PokemonCollectionViewCell.swift in Sources */,
+				C821BE1C29712E030094D7F5 /* UICollectionView+ReusableView.swift in Sources */,
 				C8D0F477296F420E00C5F74D /* Coordinator.swift in Sources */,
 				C8D0F4A9296FA66000C5F74D /* UIAlertController+Builder.swift in Sources */,
 				C8D0F4B0296FC34900C5F74D /* Region.swift in Sources */,

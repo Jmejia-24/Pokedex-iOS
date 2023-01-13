@@ -12,8 +12,7 @@ struct AppStyle {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .white
-        appearance.titleTextAttributes = [.foregroundColor: UIColor.black,
-                                          .font: UIFont.boldSystemFont(ofSize: 20)]
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
         
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().compactAppearance = appearance

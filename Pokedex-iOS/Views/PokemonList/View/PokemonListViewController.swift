@@ -8,6 +8,11 @@
 import UIKit
 import Combine
 
+enum Mode {
+    case addingTeam
+    case notAddingTeam
+}
+
 final class PokemonListViewController: UICollectionViewController {
     
     private enum Section: CaseIterable {
@@ -17,11 +22,24 @@ final class PokemonListViewController: UICollectionViewController {
     private typealias DataSource = UICollectionViewDiffableDataSource<Section, PokemonEntry>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, PokemonEntry>
     
-    var selectedCells:[Int] = []
-    var pokemonModel = [PokemonEntry]()
-    
     private var subscription: AnyCancellable?
-    private let viewModel: PokemonListViewModelRepresentable
+    private var viewModel: PokemonListViewModelRepresentable
+    
+    private var currentMode: Mode = .notAddingTeam
+    
+    private lazy var addTeamButtonItem: UIBarButtonItem = {
+        let buttonItem = UIBarButtonItem(title: "Add Team", primaryAction: UIAction { [unowned self] _ in
+            tapAddTeamButton()
+        })
+        return buttonItem
+    }()
+    
+    private lazy var cancelButtonItem: UIBarButtonItem = {
+        let buttonItem = UIBarButtonItem(title: "Cancel", primaryAction: UIAction { [unowned self] _ in
+            tapCancelButton()
+        })
+        return buttonItem
+    }()
     
     init(viewModel: PokemonListViewModelRepresentable) {
         self.viewModel = viewModel
@@ -42,8 +60,9 @@ final class PokemonListViewController: UICollectionViewController {
         view.backgroundColor = .white
         title = "Pókemon"
         viewModel.loadData()
-        navigationItem.rightBarButtonItem = editButtonItem
-        collectionView.allowsMultipleSelectionDuringEditing = true
+        navigationItem.rightBarButtonItems = [addTeamButtonItem, cancelButtonItem]
+        cancelButtonItem.isHidden = true
+        collectionView.register(PokemonCollectionViewCell.self)
     }
     
     private func bindUI() {
@@ -59,29 +78,42 @@ final class PokemonListViewController: UICollectionViewController {
         }
     }
     
+    private func tapAddTeamButton() {
+        currentMode = currentMode == .addingTeam ? .notAddingTeam : .addingTeam
+        switch currentMode {
+        case .addingTeam:
+            title = ""
+            addTeamButtonItem.title = "Done"
+            cancelButtonItem.isHidden = false
+        case .notAddingTeam:
+            title = "Pókemon"
+            addTeamButtonItem.title = "Add Team"
+            cancelButtonItem.isHidden = true
+        }
+        reloadData()
+    }
+    
+    private func tapCancelButton() {
+        title = "Pókemon"
+        viewModel.selectedPokemons.removeAll()
+        currentMode = .notAddingTeam
+        cancelButtonItem.isHidden = true
+        addTeamButtonItem.title = "Add Team"
+        reloadData()
+    }
+    
     // MARK: Diffable data source
-    
-    private let registerPokemonCell = UICollectionView.CellRegistration<UICollectionViewListCell, PokemonEntry> { cell, indexPath, pokemonEntry in
-        var configuration = cell.defaultContentConfiguration()
-        configuration.text = pokemonEntry.pokemon.name.capitalized
-        
-        cell.contentConfiguration = configuration
-        
-        let customAccessory = UICellAccessory.CustomViewConfiguration(
-          customView: UIImageView(image: UIImage(systemName: "checkmark.circle")),
-          placement: .trailing(displayed: .always))
-
-        cell.accessories = [.customView(configuration: customAccessory)]
-    }
-    
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        collectionView.isEditing = editing
-    }
     
     private lazy var dataSource: DataSource = {
         let dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, item -> UICollectionViewCell in
-            collectionView.dequeueConfiguredReusableCell(using: self.registerPokemonCell, for: indexPath, item: item)
+            let cell: PokemonCollectionViewCell = collectionView.dequeueCell(for: indexPath)
+            
+            let isSelected = self.viewModel.selectedPokemons.contains(where: { $0.name == item.pokemon.name })
+            
+            cell.performSelected(isSelected, for: self.currentMode)
+            cell.configure(item.pokemon)
+            
+            return cell
         }
         return dataSource
     }()
@@ -93,33 +125,27 @@ final class PokemonListViewController: UICollectionViewController {
         dataSource.apply(snapshot)
     }
     
+    private func reloadData() {
+        DispatchQueue.main.async { [unowned self] in
+            collectionView.reloadData()
+        }
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let pokemon = dataSource.itemIdentifier(for: indexPath) else { return }
        
-        if !isEditing {
+        switch currentMode {
+        case .addingTeam:
+            if let index = viewModel.selectedPokemons.firstIndex(where: { $0.name == pokemon.pokemon.name }) {
+                viewModel.selectedPokemons.remove(at: index)
+            } else {
+                viewModel.selectedPokemons.append(pokemon.pokemon)
+            }
+            reloadData()
+        case .notAddingTeam:
             viewModel.didTapItem(model: pokemon.pokemon)
         }
-        
-        else {
-            if self.selectedCells.contains(indexPath.item) {
-                var index = self.selectedCells.firstIndex(of: indexPath.item)
-                self.selectedCells.remove(at: index!)
-                
-            }
-            else {
-                self.selectedCells.append(indexPath.item)
-               
-              
-            }
-        }
-        
-        var snapshot = dataSource.snapshot()
-        snapshot.reloadItems([pokemon])
-//        let selectedData = pokemonModel[indexPath.item]
-        dataSource.apply(snapshot, animatingDifferences: true)
     }
-    
-    
 }
 
 extension PokemonListViewController {
