@@ -7,8 +7,6 @@
 
 import UIKit
 import Combine
-import FirebaseDatabase
-import Firebase
 
 enum Mode {
     case addingTeam
@@ -26,10 +24,6 @@ final class PokemonListViewController: UICollectionViewController {
     
     private var subscription: AnyCancellable?
     private var viewModel: PokemonListViewModelRepresentable
-    
-    private var database: DatabaseReference {
-        Database.database().reference()
-    }
     
     private lazy var addTeamButtonItem: UIBarButtonItem = {
         let buttonItem = UIBarButtonItem(title: "Add Team", primaryAction: UIAction { [unowned self] _ in
@@ -73,13 +67,12 @@ final class PokemonListViewController: UICollectionViewController {
     
     private func setUI() {
         title = "Pókemon"
-        
-        viewModel.loadData()
         navigationItem.rightBarButtonItems = [addTeamButtonItem, doneButtonItem, cancelButtonItem]
+        safeAreaLayoutGuideetSafe()
+        collectionView.register(PokemonCollectionViewCell.self)
         cancelButtonItem.isHidden = true
         doneButtonItem.isHidden = true
-        collectionView.register(PokemonCollectionViewCell.self)
-        safeAreaLayoutGuideetSafe()
+        viewModel.loadData()
     }
     
     private func bindUI() {
@@ -132,15 +125,7 @@ final class PokemonListViewController: UICollectionViewController {
                         return
                     }
                     
-                    let userId = Auth.auth().currentUser!.uid
-                    let teamId = database.childByAutoId().key ?? UUID().uuidString
-                    
-                    let dict = viewModel.selectedPokemons.compactMap { $0.getParentDict }
-                    
-                    database.child(userId).child("teams").child(teamId).setValue([
-                        "title": title,
-                        "pokemons": dict
-                    ])
+                    viewModel.saveTeam(title: title)
                     
                     finishAddingTeam()
                 }

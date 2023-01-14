@@ -32,12 +32,26 @@ final class TeamListViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
+        bindUI()
     }
     
     private func setUI() {
         title = "Teams"
         safeAreaLayoutGuideetSafe()
         viewModel.loadData()
+    }
+    
+    private func bindUI() {
+        subscription = viewModel.teamListSubject.sink { [unowned self] completion in
+            switch completion {
+            case .finished:
+                print("Received completion in VC", completion)
+            case .failure(let error):
+                presentAlert(with: error)
+            }
+        } receiveValue: { [unowned self] teams in
+            applySnapshot(teams: teams)
+        }
     }
     
     // MARK: Diffable data source

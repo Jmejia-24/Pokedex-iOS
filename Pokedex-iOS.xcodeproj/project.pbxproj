@@ -17,6 +17,7 @@
 		C824C3652972878B00662885 /* TeamListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C824C3642972878B00662885 /* TeamListViewModel.swift */; };
 		C824C367297287AC00662885 /* TeamListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C824C366297287AC00662885 /* TeamListViewController.swift */; };
 		C824C369297287B800662885 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = C824C368297287B800662885 /* Team.swift */; };
+		C824C36C297298BB00662885 /* CodableFirebase in Frameworks */ = {isa = PBXBuildFile; productRef = C824C36B297298BB00662885 /* CodableFirebase */; };
 		C830BD2829705C1A003A52C4 /* PokemonDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C830BD2729705C1A003A52C4 /* PokemonDetailCoordinator.swift */; };
 		C830BD2A29705C26003A52C4 /* PokemonDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C830BD2929705C26003A52C4 /* PokemonDetailViewModel.swift */; };
 		C830BD2D29705C3B003A52C4 /* PokemonDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C830BD2B29705C3B003A52C4 /* PokemonDetailViewController.swift */; };
@@ -125,6 +126,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C824C36C297298BB00662885 /* CodableFirebase in Frameworks */,
 				C8D0F493296F809F00C5F74D /* FirebaseDatabaseSwift in Frameworks */,
 				C8D0F491296F809F00C5F74D /* FirebaseDatabase in Frameworks */,
 				C8D0F48B296F809F00C5F74D /* FirebaseAnalyticsSwift in Frameworks */,
@@ -485,6 +487,7 @@
 				C8D0F492296F809F00C5F74D /* FirebaseDatabaseSwift */,
 				C8D0F495296F96EA00C5F74D /* GoogleSignIn */,
 				C8D0F497296F96EA00C5F74D /* GoogleSignInSwift */,
+				C824C36B297298BB00662885 /* CodableFirebase */,
 			);
 			productName = "Pokedex-iOS";
 			productReference = C8D0F457296F40D300C5F74D /* Pokedex-iOS.app */;
@@ -517,6 +520,7 @@
 			packageReferences = (
 				C8D0F487296F809F00C5F74D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				C8D0F494296F96EA00C5F74D /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				C824C36A297298BB00662885 /* XCRemoteSwiftPackageReference "CodableFirebase" */,
 			);
 			productRefGroup = C8D0F458296F40D300C5F74D /* Products */;
 			projectDirPath = "";
@@ -800,6 +804,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C824C36A297298BB00662885 /* XCRemoteSwiftPackageReference "CodableFirebase" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/alickbass/CodableFirebase.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.2;
+			};
+		};
 		C8D0F487296F809F00C5F74D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -819,6 +831,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C824C36B297298BB00662885 /* CodableFirebase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C824C36A297298BB00662885 /* XCRemoteSwiftPackageReference "CodableFirebase" */;
+			productName = CodableFirebase;
+		};
 		C8D0F488296F809F00C5F74D /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C8D0F487296F809F00C5F74D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

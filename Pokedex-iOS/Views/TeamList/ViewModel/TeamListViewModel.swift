@@ -7,22 +7,29 @@
 
 import UIKit
 import Combine
-import FirebaseDatabase
 import Firebase
 
 protocol TeamListViewModelRepresentable {
     func loadData()
     func didTapItem(model: Team)
+    var teamListSubject: PassthroughSubject<[Team], Failure> { get }
 }
 
 final class TeamListViewModel<R: AppRouter> {
     var router: R?
     
-    private var database: DatabaseReference {
-        Database.database().reference()
+    private var cancellables = Set<AnyCancellable>()
+    private let store: TeamListStore
+    let teamListSubject = PassthroughSubject<[Team], Failure>()
+    
+    private var fetchedTeams = [Team]() {
+        didSet {
+            teamListSubject.send(fetchedTeams)
+        }
     }
     
-    init() {
+    init(store: TeamListStore = APIManager()) {
+        self.store = store
     }
 }
 
@@ -33,15 +40,27 @@ extension TeamListViewModel: TeamListViewModelRepresentable {
     
     func loadData() {
         let userId = Auth.auth().currentUser!.uid
-        database.child(userId).child("teams").observeSingleEvent(of: .value, with: { teams in
-            if let value = teams as? [String: Any],
-               let title = value["title"] as? String {
-                print(title)
+        
+        let recieved = { (response: [String : Team]) -> Void in
+            response.values.forEach { team in
+                DispatchQueue.main.async { [unowned self] in
+                    fetchedTeams.append(team as Team)
+                }
             }
-            
-        }) { error in
-            print(error.localizedDescription)
         }
+        
+        let completion = { [unowned self] (completion: Subscribers.Completion<Failure>) -> Void in
+            switch  completion {
+            case .finished:
+                break
+            case .failure(let failure):
+                teamListSubject.send(completion: .failure(failure))
+            }
+        }
+        
+        store.readTeams(userId: userId)
+            .sink(receiveCompletion: completion, receiveValue: recieved)
+            .store(in: &cancellables)
     }
 }
 

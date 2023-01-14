@@ -7,6 +7,8 @@
 
 import UIKit
 import Combine
+import CodableFirebase
+import Firebase
 
 protocol HomeListStore {
     func readRegionList() -> Future<RegionResponse, Failure>
@@ -18,13 +20,21 @@ protocol PokedexListStore {
 
 protocol PokemonListStore {
     func readPokemons(pokedex: Pokedex) -> Future<PokemonResponse, Failure>
+    func saveTeam(userId: String, model: Team) -> Future<Bool, Failure>
 }
 
 protocol PokemonDetailStore {
     func readPokemonDetails(pokemon: Pokemon) -> Future<PokemonDetailBase, Failure>
 }
 
+protocol TeamListStore {
+    func readTeams(userId: String) -> Future<[String : Team], Failure>
+}
+
 final class APIManager {
+    private var database: DatabaseReference {
+        Database.database().reference()
+    }
     
     private func request<T>(for stringURL: String) -> Future<T, Failure> where T : Codable {
         return Future { promise in
@@ -76,6 +86,19 @@ extension APIManager: PokedexListStore {
 }
 
 extension APIManager: PokemonListStore {
+    func saveTeam(userId: String, model: Team) -> Future<Bool, Failure> {
+        return Future { [unowned self] promise in
+            let teamId = database.childByAutoId().key ?? UUID().uuidString
+            do {
+                let data = try FirebaseEncoder().encode(model)
+                Database.database().reference().child(userId).child("teams").child(teamId).setValue(data)
+                promise(.success(true))
+            } catch {
+                promise(.failure(.APIError(error)))
+            }
+        }
+    }
+    
     func readPokemons(pokedex: Pokedex) -> Future<PokemonResponse, Failure> {
         return request(for: pokedex.url)
     }
@@ -84,5 +107,21 @@ extension APIManager: PokemonListStore {
 extension APIManager: PokemonDetailStore {
     func readPokemonDetails(pokemon: Pokemon) -> Future<PokemonDetailBase, Failure> {
         return request(for: pokemon.url)
+    }
+}
+
+extension APIManager: TeamListStore {
+    func readTeams(userId: String) -> Future<[String : Team], Failure> {
+        return Future { [unowned self] promise in
+            database.child(userId).child("teams").observeSingleEvent(of: .value, with: { snapshot in
+                guard let value = snapshot.value else { return }
+                do {
+                    let response = try FirebaseDecoder().decode([String: Team].self, from: value)
+                    promise(.success(response))
+                } catch {
+                    promise(.failure(.APIError(error)))
+                }
+            })
+        }
     }
 }

@@ -7,8 +7,12 @@
 
 import Foundation
 
-struct Team: Hashable {
-    var id: String
+struct Team: Codable, Hashable {
     var title: String
     var pokemons: [Pokemon]
+    
+    enum CodingKeys: String, CodingKey {
+        case title
+        case pokemons
+    }
 }

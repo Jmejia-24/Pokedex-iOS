@@ -7,10 +7,12 @@
 
 import UIKit
 import Combine
+import Firebase
 
 protocol PokemonListViewModelRepresentable {
     func loadData()
     func didTapItem(model: Pokemon)
+    func saveTeam(title: String)
     var pokemonListSubject: PassthroughSubject<[PokemonEntry], Failure> { get }
     var selectedPokemons: [Pokemon] { get set }
     var currentMode: Mode { get set }
@@ -33,6 +35,16 @@ final class PokemonListViewModel<R: AppRouter> {
 }
 
 extension PokemonListViewModel: PokemonListViewModelRepresentable {
+    
+    func saveTeam(title: String) {
+        let userId = Auth.auth().currentUser!.uid
+        let team = Team(title: title, pokemons: selectedPokemons)
+        
+        store.saveTeam(userId: userId, model: team)
+            .sink(receiveCompletion: { _ in }, receiveValue: { _ in })
+            .store(in: &cancellables)
+    }
+    
     func didTapItem(model: Pokemon) {
         router?.process(route: .showPokemonDetail(model: model))
     }
