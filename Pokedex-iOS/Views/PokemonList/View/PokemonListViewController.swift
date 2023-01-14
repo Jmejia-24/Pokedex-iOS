@@ -133,7 +133,7 @@ final class PokemonListViewController: UICollectionViewController {
                     }
                     
                     let userId = Auth.auth().currentUser!.uid
-                    let teamId = UUID().uuidString
+                    let teamId = database.childByAutoId().key ?? UUID().uuidString
                     
                     let dict = viewModel.selectedPokemons.compactMap { $0.getParentDict }
                     

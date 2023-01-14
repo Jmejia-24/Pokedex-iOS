@@ -19,7 +19,7 @@ extension App: Coordinator {
             !UserDefaultsManager.shared.email.isEmpty && !UserDefaultsManager.shared.provider.isEmpty
         }
         
-        process(route: isUserSession ? .showHome : .showLogIn)
+        process(route: isUserSession ? .shoWTeamList : .showLogIn)
     }
 }
 

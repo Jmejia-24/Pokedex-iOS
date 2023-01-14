@@ -58,4 +58,3 @@ extension PokemonListViewModel: PokemonListViewModelRepresentable {
             .store(in: &cancellables)
     }
 }
-
