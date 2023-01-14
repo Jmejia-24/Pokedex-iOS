@@ -29,7 +29,7 @@ class LogInViewController: UIViewController {
     }
     
     private func setUI() {
-        
+        navigationController?.isNavigationBarHidden = true
     }
     
     private func bindUI() {

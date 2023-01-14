@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,51 +18,83 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pokedex" translatesAutoresizingMaskIntoConstraints="NO" id="IXT-bG-oJb">
-                    <rect key="frame" x="25" y="344.5" width="364" height="207"/>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZeG-Zl-pMg">
+                    <rect key="frame" x="0.0" y="48" width="414" height="814"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="CG6-z6-Wtw">
+                            <rect key="frame" x="20" y="0.0" width="374" height="380.5"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pokedex" translatesAutoresizingMaskIntoConstraints="NO" id="IXT-bG-oJb">
+                                    <rect key="frame" x="0.0" y="0.0" width="374" height="207"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="207" id="y3H-0U-4SA"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log in to your account" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3lX-0g-egd">
+                                    <rect key="frame" x="43" y="227" width="288" height="33.5"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="xPN-nq-0TW">
+                                    <rect key="frame" x="77" y="280.5" width="220" height="100"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UIC-fu-fLD">
+                                            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="100" id="1fx-Jq-oT0"/>
+                                                <constraint firstAttribute="height" constant="100" id="a3l-nf-2AD"/>
+                                            </constraints>
+                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                            <state key="normal" image="googleIcon"/>
+                                            <connections>
+                                                <action selector="didTapGoogleButton:" destination="-1" eventType="touchUpInside" id="CCy-d7-9lr"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fwI-v2-VHO">
+                                            <rect key="frame" x="120" y="0.0" width="100" height="100"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="100" id="h5K-pi-uxO"/>
+                                                <constraint firstAttribute="width" constant="100" id="vx4-CQ-YAg"/>
+                                            </constraints>
+                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                            <state key="normal" image="facebookIcon"/>
+                                        </button>
+                                    </subviews>
+                                </stackView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </stackView>
+                    </subviews>
+                    <viewLayoutGuide key="safeArea" id="rFX-Qu-a9I"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="207" id="y3H-0U-4SA"/>
+                        <constraint firstItem="CG6-z6-Wtw" firstAttribute="leading" secondItem="rFX-Qu-a9I" secondAttribute="leading" constant="20" id="9gY-Zs-D6y"/>
+                        <constraint firstAttribute="trailing" secondItem="CG6-z6-Wtw" secondAttribute="trailing" constant="20" id="ESJ-Wd-4uy"/>
+                        <constraint firstItem="rFX-Qu-a9I" firstAttribute="trailing" secondItem="CG6-z6-Wtw" secondAttribute="trailing" constant="20" id="Iny-Uo-NEt"/>
+                        <constraint firstItem="CG6-z6-Wtw" firstAttribute="bottom" secondItem="afa-Rg-dCa" secondAttribute="bottom" id="UyS-qs-q4b"/>
+                        <constraint firstItem="CG6-z6-Wtw" firstAttribute="top" secondItem="afa-Rg-dCa" secondAttribute="top" id="awK-zW-tJO"/>
                     </constraints>
-                </imageView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UIC-fu-fLD">
-                    <rect key="frame" x="107" y="721.5" width="60" height="60"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="60" id="1fx-Jq-oT0"/>
-                        <constraint firstAttribute="height" constant="60" id="a3l-nf-2AD"/>
-                    </constraints>
-                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                    <state key="normal" image="google"/>
-                    <connections>
-                        <action selector="didTapGoogleButton:" destination="-1" eventType="touchUpInside" id="CCy-d7-9lr"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fwI-v2-VHO">
-                    <rect key="frame" x="245" y="721.5" width="60" height="60"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="60" id="h5K-pi-uxO"/>
-                        <constraint firstAttribute="width" constant="60" id="vx4-CQ-YAg"/>
-                    </constraints>
-                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                    <state key="normal" image="facebook"/>
-                </button>
+                    <viewLayoutGuide key="contentLayoutGuide" id="afa-Rg-dCa"/>
+                    <viewLayoutGuide key="frameLayoutGuide" id="Y8v-G0-Ups"/>
+                </scrollView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="IXT-bG-oJb" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="DFO-Dr-rOm"/>
-                <constraint firstItem="IXT-bG-oJb" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="25" id="Fkg-fZ-j4Y"/>
-                <constraint firstItem="UIC-fu-fLD" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" constant="-70" id="JSk-k4-nCW"/>
-                <constraint firstItem="fwI-v2-VHO" firstAttribute="leading" secondItem="UIC-fu-fLD" secondAttribute="trailing" constant="78" id="NoD-A9-F3i"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="IXT-bG-oJb" secondAttribute="trailing" constant="25" id="ha2-AB-pyO"/>
-                <constraint firstItem="fwI-v2-VHO" firstAttribute="top" secondItem="IXT-bG-oJb" secondAttribute="bottom" constant="170" id="n8T-kl-SpL"/>
-                <constraint firstItem="UIC-fu-fLD" firstAttribute="top" secondItem="IXT-bG-oJb" secondAttribute="bottom" constant="170" id="qne-9i-7uk"/>
+                <constraint firstItem="ZeG-Zl-pMg" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="YMU-Ih-rse"/>
+                <constraint firstItem="ZeG-Zl-pMg" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="d6c-LP-9Gq"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ZeG-Zl-pMg" secondAttribute="trailing" id="hAv-mG-Flh"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="ZeG-Zl-pMg" secondAttribute="bottom" id="qzo-77-D4D"/>
             </constraints>
             <point key="canvasLocation" x="234.78260869565219" y="124.55357142857142"/>
         </view>
     </objects>
     <resources>
-        <image name="facebook" width="512" height="512"/>
-        <image name="google" width="512" height="512"/>
+        <image name="facebookIcon" width="200" height="200"/>
+        <image name="googleIcon" width="200" height="200"/>
         <image name="pokedex" width="2491" height="449"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

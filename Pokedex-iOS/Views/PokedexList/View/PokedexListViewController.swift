@@ -85,7 +85,7 @@ final class PokedexListViewController: UICollectionViewController {
 
 extension PokedexListViewController {
     static private func generateLayout() -> UICollectionViewCompositionalLayout {
-        var listConfig = UICollectionLayoutListConfiguration(appearance: .plain)
+        let listConfig = UICollectionLayoutListConfiguration(appearance: .plain)
         return UICollectionViewCompositionalLayout.list(using: listConfig)
     }
 }

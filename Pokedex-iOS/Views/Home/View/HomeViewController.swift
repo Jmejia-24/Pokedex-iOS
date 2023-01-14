@@ -36,6 +36,7 @@ final class HomeViewController: UICollectionViewController {
     }
     
     private func setUI() {
+        navigationController?.isNavigationBarHidden = false
         navigationItem.setHidesBackButton(true, animated: false)
         title = "Home"
         safeAreaLayoutGuideetSafe()
@@ -86,7 +87,7 @@ final class HomeViewController: UICollectionViewController {
 
 extension HomeViewController {
     static private func generateLayout() -> UICollectionViewCompositionalLayout {
-        var listConfig = UICollectionLayoutListConfiguration(appearance: .plain)
+        let listConfig = UICollectionLayoutListConfiguration(appearance: .plain)
         return UICollectionViewCompositionalLayout.list(using: listConfig)
     }
 }
