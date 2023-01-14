@@ -10,14 +10,19 @@ import GoogleSignIn
 import Firebase
 import Combine
 
+enum Provider: String {
+    case google
+    case facebook
+}
+
 protocol LogInViewModelRepresentable {
-    var errorSubject: PassthroughSubject<Error, Error> { get }
+    var errorSubject: PassthroughSubject<String, Error> { get }
     func googleSignIn(_ viewController: UIViewController)
 }
 
 final class LogInViewModel<R: AppRouter> {
     var router: R?
-    let errorSubject = PassthroughSubject<Error, Error>()
+    let errorSubject = PassthroughSubject<String, Error>()
     
     init() {
         
@@ -30,7 +35,7 @@ extension LogInViewModel: LogInViewModelRepresentable {
         
         GIDSignIn.sharedInstance.signIn(withPresenting: viewController) { [unowned self] signInResult, error in
             if let error = error {
-                errorSubject.send(error)
+                errorSubject.send(error.localizedDescription)
                 return
             }
             
@@ -40,10 +45,17 @@ extension LogInViewModel: LogInViewModelRepresentable {
             let credential = GoogleAuthProvider.credential(withIDToken: idToken.tokenString, accessToken: authentication.accessToken.tokenString)
             
             Auth.auth().signIn(with: credential) { [weak self] result, error in
-                guard let self = self else { return }
+                guard let self = self,
+                      let email = result?.user.email else {
+                    self?.errorSubject.send("Invalid credentials")
+                    return
+                }
+                
                 if let error = error {
-                    self.errorSubject.send(error)
+                    self.errorSubject.send(error.localizedDescription)
                 } else {
+                    UserDefaultsManager.shared.email = email
+                    UserDefaultsManager.shared.provider = Provider.google.rawValue
                     self.router?.process(route: .showHome)
                 }
             }

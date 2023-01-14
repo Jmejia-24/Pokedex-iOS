@@ -14,7 +14,12 @@ final class App {
 
 extension App: Coordinator {
     func start() {
-        process(route: .showLogIn)
+        
+        var isUserSession: Bool {
+            !UserDefaultsManager.shared.email.isEmpty && !UserDefaultsManager.shared.provider.isEmpty
+        }
+        
+        process(route: isUserSession ? .showHome : .showLogIn)
     }
 }
 

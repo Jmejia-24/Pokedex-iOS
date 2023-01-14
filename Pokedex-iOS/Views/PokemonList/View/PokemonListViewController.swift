@@ -7,6 +7,8 @@
 
 import UIKit
 import Combine
+import FirebaseDatabase
+import Firebase
 
 enum Mode {
     case addingTeam
@@ -24,6 +26,10 @@ final class PokemonListViewController: UICollectionViewController {
     
     private var subscription: AnyCancellable?
     private var viewModel: PokemonListViewModelRepresentable
+    
+    private var database: DatabaseReference {
+        Database.database().reference()
+    }
     
     private lazy var addTeamButtonItem: UIBarButtonItem = {
         let buttonItem = UIBarButtonItem(title: "Add Team", primaryAction: UIAction { [unowned self] _ in
@@ -67,7 +73,7 @@ final class PokemonListViewController: UICollectionViewController {
     
     private func setUI() {
         title = "Pókemon"
-
+        
         viewModel.loadData()
         navigationItem.rightBarButtonItems = [addTeamButtonItem, doneButtonItem, cancelButtonItem]
         cancelButtonItem.isHidden = true
@@ -118,6 +124,7 @@ final class PokemonListViewController: UICollectionViewController {
             UIAlertController.Builder()
                 .withTitle("Add Team Title")
                 .withTextField(true)
+                .withButton(style: .destructive, title: "Cancel")
                 .withButton(title: "Save team") { [unowned self] alert in
                     guard let title = alert.textFields?.first?.text,
                           !title.isEmpty else {
@@ -125,7 +132,15 @@ final class PokemonListViewController: UICollectionViewController {
                         return
                     }
                     
-                    print("Title team: \(title)")
+                    let userId = Auth.auth().currentUser!.uid
+                    let teamId = UUID().uuidString
+                    
+                    let dict = viewModel.selectedPokemons.compactMap { $0.getParentDict }
+                    
+                    database.child(userId).child("teams").child(teamId).setValue([
+                        "title": title,
+                        "pokemons": dict
+                    ])
                     
                     finishAddingTeam()
                 }
@@ -166,12 +181,12 @@ final class PokemonListViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let pokemon = dataSource.itemIdentifier(for: indexPath) else { return }
-       
+        
         switch viewModel.currentMode {
         case .addingTeam:
             if let index = viewModel.selectedPokemons.firstIndex(where: { $0.name == pokemon.pokemon.name }) {
                 viewModel.selectedPokemons.remove(at: index)
-            } else {
+            } else if viewModel.selectedPokemons.count <= 5 {
                 viewModel.selectedPokemons.append(pokemon.pokemon)
             }
             reloadData()

@@ -8,8 +8,13 @@
 import Foundation
 
 struct Pokemon: Codable, Hashable {
-    let name: String
-    let url: String
+    var name: String
+    var url: String
+    
+    enum CodingKeys: String, CodingKey {
+        case name
+        case url
+    }
 }
 
 struct PokemonEntry: Codable, Hashable {
@@ -17,5 +22,11 @@ struct PokemonEntry: Codable, Hashable {
     
     enum CodingKeys: String, CodingKey {
         case pokemon = "pokemon_species"
+    }
+}
+
+extension Pokemon {
+    var getParentDict: [String: Any] {
+        ["name": name, "url": url]
     }
 }
