@@ -22,7 +22,7 @@ final class TeamListViewController: UICollectionViewController {
     
     init(viewModel: TeamListViewModelRepresentable) {
         self.viewModel = viewModel
-        super.init(collectionViewLayout: Self.generateLayout())
+        super.init(collectionViewLayout: UICollectionViewLayout())
     }
     
     required init?(coder: NSCoder) {
@@ -37,6 +37,7 @@ final class TeamListViewController: UICollectionViewController {
     
     private func setUI() {
         title = "Teams"
+        collectionView.collectionViewLayout = generateLayout()
         safeAreaLayoutGuideetSafe()
         viewModel.loadData()
     }
@@ -77,6 +78,29 @@ final class TeamListViewController: UICollectionViewController {
         dataSource.apply(snapshot)
     }
     
+    private func deleteTeam(indexPath: IndexPath) {
+        guard let team = dataSource.itemIdentifier(for: indexPath) else { return }
+        var snapshot = dataSource.snapshot()
+        snapshot.deleteItems([team])
+        dataSource.apply(snapshot)
+    }
+    
+    private func editTeam(indexPath: IndexPath) {
+        guard let team = dataSource.itemIdentifier(for: indexPath) else { return }
+        UIAlertController.Builder()
+            .withTitle("Update Team Title")
+            .withTextField(true)
+            .withButton(style: .destructive, title: "Cancel")
+            .withButton(title: "Update team") { [unowned self] alert in
+                guard let title = alert.textFields?.first?.text,
+                      !title.isEmpty else {
+                    presentAlert(with: "Title cannot be empty")
+                    return
+                }
+            }
+            .present(in: self)
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let pokedex = dataSource.itemIdentifier(for: indexPath) else { return }
         viewModel.didTapItem(model: pokedex)
@@ -84,8 +108,24 @@ final class TeamListViewController: UICollectionViewController {
 }
 
 extension TeamListViewController {
-    static private func generateLayout() -> UICollectionViewCompositionalLayout {
-        let listConfig = UICollectionLayoutListConfiguration(appearance: .plain)
+    private func generateLayout() -> UICollectionViewCompositionalLayout {
+        var listConfig = UICollectionLayoutListConfiguration(appearance: .plain)
+        listConfig.trailingSwipeActionsConfigurationProvider = { indexPath in
+            let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [unowned self] _, _, completion in
+                deleteTeam(indexPath: indexPath)
+                completion(true)
+            }
+            deleteAction.image = UIImage(systemName: "trash")
+            
+            let editAction = UIContextualAction(style: .normal, title: "Edit") { [unowned self] _, _, completion in
+                editTeam(indexPath: indexPath)
+                completion(true)
+            }
+            editAction.image = UIImage(systemName: "pencil.circle.fill")
+            editAction.backgroundColor = .blue
+            
+            return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+        }
         return UICollectionViewCompositionalLayout.list(using: listConfig)
     }
 }

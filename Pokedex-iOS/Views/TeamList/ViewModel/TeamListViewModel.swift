@@ -42,9 +42,11 @@ extension TeamListViewModel: TeamListViewModelRepresentable {
         let userId = Auth.auth().currentUser!.uid
         
         let recieved = { (response: [String : Team]) -> Void in
-            response.values.forEach { team in
+            response.forEach { dict in
+                var team: Team = dict.value
+                team.id = dict.key
                 DispatchQueue.main.async { [unowned self] in
-                    fetchedTeams.append(team as Team)
+                    fetchedTeams.append(team)
                 }
             }
         }

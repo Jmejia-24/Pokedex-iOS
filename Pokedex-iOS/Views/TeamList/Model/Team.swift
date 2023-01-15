@@ -8,6 +8,7 @@
 import Foundation
 
 struct Team: Codable, Hashable {
+    var id: String?
     var title: String
     var pokemons: [Pokemon]
     
