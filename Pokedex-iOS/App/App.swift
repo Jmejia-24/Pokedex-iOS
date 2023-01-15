@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GoogleSignIn
 
 final class App {
     var navigationController = UINavigationController()
@@ -19,7 +20,7 @@ extension App: Coordinator {
             !UserDefaultsManager.shared.email.isEmpty && !UserDefaultsManager.shared.provider.isEmpty
         }
         
-        process(route: isUserSession ? .shoWTeamList : .showLogIn)
+        process(route: isUserSession ? .showHome : .showLogIn)
     }
 }
 
@@ -29,7 +30,15 @@ extension App: AppRouter {
         /// In this Router context - the only exit left is the main screen.
         /// Logout - clean tokens - local cache - offline database if needed etc.
         
+        switch UserDefaultsManager.shared.provider {
+        case Provider.google.rawValue:
+            GIDSignIn.sharedInstance.signOut()
+        default:
+            break
+        }
+        
         navigationController.popToRootViewController(animated: true)
+        process(route: .showLogIn)
     }
     
     func process(route: AppTransition) {

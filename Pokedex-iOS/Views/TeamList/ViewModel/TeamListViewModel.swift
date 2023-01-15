@@ -35,7 +35,7 @@ final class TeamListViewModel<R: AppRouter> {
 
 extension TeamListViewModel: TeamListViewModelRepresentable {
     func didTapItem(model: Team) {
-        
+        router?.process(route: .showPokemonTeam(model: model))
     }
     
     func loadData() {

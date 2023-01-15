@@ -20,6 +20,24 @@ final class HomeViewController: UICollectionViewController {
     private var subscription: AnyCancellable?
     private let viewModel: HomeViewModelRepresentable
     
+    private lazy var sidebarView: SidebarView = {
+        let sidebarView = SidebarView(delegate: self)
+        sidebarView.sidebarBackgroundColor = .systemBackground
+        sidebarView.blurBackgroundEffect = UIBlurEffect(style: .dark)
+        sidebarView.dismissesOnSelection = true
+        sidebarView.allowsPullToDisplay = true
+        sidebarView.shouldPushRootControllerOnDisplay = true
+        sidebarView.sidebarViewScreenPercentageWidth = 0.7
+        return sidebarView
+    }()
+    
+    private lazy var sideMenuButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal.circle.fill"), primaryAction: UIAction { [unowned self] _ in
+            sidebarView.show()
+        })
+        return button
+    }()
+    
     init(viewModel: HomeViewModelRepresentable) {
         self.viewModel = viewModel
         super.init(collectionViewLayout: Self.generateLayout())
@@ -38,7 +56,8 @@ final class HomeViewController: UICollectionViewController {
     private func setUI() {
         navigationController?.isNavigationBarHidden = false
         navigationItem.setHidesBackButton(true, animated: false)
-        title = "Home"
+        navigationItem.leftBarButtonItem = sideMenuButton
+        title = "Regions"
         safeAreaLayoutGuideetSafe()
         viewModel.loadData()
     }
@@ -89,5 +108,11 @@ extension HomeViewController {
     static private func generateLayout() -> UICollectionViewCompositionalLayout {
         let listConfig = UICollectionLayoutListConfiguration(appearance: .plain)
         return UICollectionViewCompositionalLayout.list(using: listConfig)
+    }
+}
+
+extension HomeViewController: SidebarViewDelegate {
+    func sidebarView(didSelectItemAt type: MenuOption) {
+        viewModel.sendTo(type)
     }
 }

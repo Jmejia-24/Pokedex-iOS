@@ -12,6 +12,7 @@ protocol HomeViewModelRepresentable {
     var regionListSubject: PassthroughSubject<[Region], Failure> { get }
     func loadData()
     func didTapItem(model: Region)
+    func sendTo(_ type: MenuOption)
 }
 
 final class HomeViewModel<R: AppRouter> {
@@ -27,6 +28,17 @@ final class HomeViewModel<R: AppRouter> {
 }
 
 extension HomeViewModel: HomeViewModelRepresentable {
+    func sendTo(_ type: MenuOption) {
+        switch type {
+        case .teams:
+            router?.process(route: .shoWTeamList)
+        case .logOut:
+            router?.exit()
+        default:
+            break
+        }
+    }
+    
     func didTapItem(model: Region) {
         router?.process(route: .showPokedexes(model: model))
     }
