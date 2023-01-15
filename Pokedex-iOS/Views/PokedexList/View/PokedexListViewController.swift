@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class PokedexListViewController: UICollectionViewController {
+final class PokedexListViewController: UICollectionViewController, Spinner {
     
     private enum Section: CaseIterable {
         case main
@@ -38,6 +38,7 @@ final class PokedexListViewController: UICollectionViewController {
     private func setUI() {
         title = "Pokedexes"
         safeAreaLayoutGuideetSafe()
+        showSpinner()
         viewModel.loadData()
     }
     
@@ -48,9 +49,11 @@ final class PokedexListViewController: UICollectionViewController {
                 print("Received completion in VC", completion)
             case .failure(let error):
                 presentAlert(with: error)
+                hideSpinner()
             }
         } receiveValue: { [unowned self] pokedexes in
             applySnapshot(pokedexes: pokedexes)
+            hideSpinner()
         }
     }
     

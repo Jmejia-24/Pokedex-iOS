@@ -12,7 +12,10 @@ import Firebase
 protocol TeamListViewModelRepresentable {
     func loadData()
     func didTapItem(model: Team)
+    func updateTitleTeam(team: Team)
+    func deleteTeam(team: Team)
     var teamListSubject: PassthroughSubject<[Team], Failure> { get }
+    var errorSubject: PassthroughSubject<String, Error> { get }
 }
 
 final class TeamListViewModel<R: AppRouter> {
@@ -20,11 +23,13 @@ final class TeamListViewModel<R: AppRouter> {
     
     private var cancellables = Set<AnyCancellable>()
     private let store: TeamListStore
+    private let userId = Auth.auth().currentUser!.uid
     let teamListSubject = PassthroughSubject<[Team], Failure>()
+    let errorSubject = PassthroughSubject<String, Error>()
     
     private var fetchedTeams = [Team]() {
         didSet {
-            teamListSubject.send(fetchedTeams)
+            teamListSubject.send(fetchedTeams.sorted())
         }
     }
     
@@ -39,12 +44,10 @@ extension TeamListViewModel: TeamListViewModelRepresentable {
     }
     
     func loadData() {
-        let userId = Auth.auth().currentUser!.uid
-        
         let recieved = { (response: [String : Team]) -> Void in
-            response.forEach { dict in
-                var team: Team = dict.value
-                team.id = dict.key
+            response.forEach { teamDict in
+                var team: Team = teamDict.value
+                team.key = teamDict.key
                 DispatchQueue.main.async { [unowned self] in
                     fetchedTeams.append(team)
                 }
@@ -56,7 +59,7 @@ extension TeamListViewModel: TeamListViewModelRepresentable {
             case .finished:
                 break
             case .failure(let failure):
-                teamListSubject.send(completion: .failure(failure))
+                errorSubject.send(failure.localizedDescription)
             }
         }
         
@@ -64,5 +67,34 @@ extension TeamListViewModel: TeamListViewModelRepresentable {
             .sink(receiveCompletion: completion, receiveValue: recieved)
             .store(in: &cancellables)
     }
+    
+    func updateTitleTeam(team: Team) {
+        let recieved = { [unowned self] (response: Bool) -> Void in
+            if response {
+                fetchedTeams = []
+                loadData()
+            } else {
+                errorSubject.send("The title of this team could not be updated")
+            }
+        }
+        
+        store.updateTitleTeam(userId: userId, team: team)
+            .sink(receiveCompletion: { _ in}, receiveValue: recieved)
+            .store(in: &cancellables)
+    }
+    
+    func deleteTeam(team: Team) {
+        let recieved = { [unowned self] (response: Bool) -> Void in
+            if response {
+                fetchedTeams = []
+                loadData()
+            } else {
+                errorSubject.send("Could not delete \(team.title)")
+            }
+        }
+        
+        store.deleteTeam(userId: userId, team: team)
+            .sink(receiveCompletion: { _ in}, receiveValue: recieved)
+            .store(in: &cancellables)
+    }
 }
-

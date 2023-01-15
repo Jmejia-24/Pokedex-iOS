@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class HomeViewController: UICollectionViewController {
+final class HomeViewController: UICollectionViewController, Spinner {
     
     private enum Section: CaseIterable {
         case main
@@ -59,6 +59,7 @@ final class HomeViewController: UICollectionViewController {
         navigationItem.leftBarButtonItem = sideMenuButton
         title = "Regions"
         safeAreaLayoutGuideetSafe()
+        showSpinner()
         viewModel.loadData()
     }
     
@@ -69,9 +70,11 @@ final class HomeViewController: UICollectionViewController {
                 print("Received completion in VC", completion)
             case .failure(let error):
                 presentAlert(with: error)
+                hideSpinner()
             }
         } receiveValue: { [unowned self] regions in
             applySnapshot(regions: regions)
+            hideSpinner()
         }
     }
     

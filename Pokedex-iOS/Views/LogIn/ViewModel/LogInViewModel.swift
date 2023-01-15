@@ -15,14 +15,19 @@ enum Provider: String {
     case facebook
 }
 
+protocol LogInViewModelDelegate {
+    func success()
+    func error(_ errorMessage: String)
+}
+
 protocol LogInViewModelRepresentable {
-    var errorSubject: PassthroughSubject<String, Error> { get }
+    var delegate: LogInViewModelDelegate? { get set }
     func googleSignIn(_ viewController: UIViewController)
 }
 
 final class LogInViewModel<R: AppRouter> {
     var router: R?
-    let errorSubject = PassthroughSubject<String, Error>()
+    var delegate: LogInViewModelDelegate?
     
     init() {
         
@@ -35,7 +40,7 @@ extension LogInViewModel: LogInViewModelRepresentable {
         
         GIDSignIn.sharedInstance.signIn(withPresenting: viewController) { [unowned self] signInResult, error in
             if let error = error {
-                errorSubject.send(error.localizedDescription)
+                delegate?.error(error.localizedDescription)
                 return
             }
             
@@ -47,13 +52,14 @@ extension LogInViewModel: LogInViewModelRepresentable {
             Auth.auth().signIn(with: credential) { [weak self] result, error in
                 guard let self = self,
                       let email = result?.user.email else {
-                    self?.errorSubject.send("Invalid credentials")
+                    self?.delegate?.error("Invalid credentials")
                     return
                 }
                 
                 if let error = error {
-                    self.errorSubject.send(error.localizedDescription)
+                    self.delegate?.error(error.localizedDescription)
                 } else {
+                    self.delegate?.success()
                     UserDefaultsManager.shared.email = email
                     UserDefaultsManager.shared.provider = Provider.google.rawValue
                     self.router?.process(route: .showHome)

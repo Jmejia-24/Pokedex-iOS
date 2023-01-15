@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class PokemonDetailViewController: UIViewController {
+final class PokemonDetailViewController: UIViewController, Spinner {
     
     @IBOutlet private var pokemonImageView: UIImageView!
     @IBOutlet private var titleLabel: UILabel!
@@ -35,6 +35,7 @@ final class PokemonDetailViewController: UIViewController {
     }
     
     private func setUI() {
+        showSpinner()
         viewModel.loadData()
     }
     
@@ -45,9 +46,11 @@ final class PokemonDetailViewController: UIViewController {
                 print("Received completion in VC", completion)
             case .failure(let error):
                 presentAlert(with: error)
+                hideSpinner()
             }
         } receiveValue: { [unowned self] pokemonDetail in
             setPokemonInfo(pokemonDetail)
+            hideSpinner()
         }
     }
     

@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class TeamListViewController: UICollectionViewController {
+final class TeamListViewController: UICollectionViewController, Spinner {
     
     private enum Section: CaseIterable {
         case main
@@ -18,6 +18,7 @@ final class TeamListViewController: UICollectionViewController {
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Team>
     
     private var subscription: AnyCancellable?
+    private var subscriptionError: AnyCancellable?
     private let viewModel: TeamListViewModelRepresentable
     
     init(viewModel: TeamListViewModelRepresentable) {
@@ -39,34 +40,40 @@ final class TeamListViewController: UICollectionViewController {
         title = "Teams"
         collectionView.collectionViewLayout = generateLayout()
         safeAreaLayoutGuideetSafe()
+        showSpinner()
         viewModel.loadData()
     }
     
     private func bindUI() {
-        subscription = viewModel.teamListSubject.sink { [unowned self] completion in
-            switch completion {
-            case .finished:
-                print("Received completion in VC", completion)
-            case .failure(let error):
-                presentAlert(with: error)
-            }
+        subscription = viewModel.teamListSubject.sink { _ in
         } receiveValue: { [unowned self] teams in
             applySnapshot(teams: teams)
+            hideSpinner()
+        }
+        
+        subscriptionError = viewModel.errorSubject.sink { _ in
+        } receiveValue: { [unowned self] errorMessage in
+            presentAlert(with: errorMessage)
+            hideSpinner()
         }
     }
     
     // MARK: Diffable data source
     
-    private let registerPokedexCell = UICollectionView.CellRegistration<UICollectionViewListCell, Team> { cell, indexPath, team in
+    private let registerTeamCell = UICollectionView.CellRegistration<UICollectionViewListCell, Team> { cell, indexPath, team in
         var configuration = cell.defaultContentConfiguration()
         configuration.text = team.title.capitalized
+        configuration.secondaryText = "Composed of \(team.pokemons.count) Pokémon"
+        configuration.prefersSideBySideTextAndSecondaryText = false
+        configuration.textToSecondaryTextVerticalPadding = 8
+        configuration.textToSecondaryTextHorizontalPadding = 8
         
         cell.contentConfiguration = configuration
     }
     
     private lazy var dataSource: DataSource = {
         let dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, item -> UICollectionViewCell in
-            collectionView.dequeueConfiguredReusableCell(using: self.registerPokedexCell, for: indexPath, item: item)
+            collectionView.dequeueConfiguredReusableCell(using: self.registerTeamCell, for: indexPath, item: item)
         }
         return dataSource
     }()
@@ -80,13 +87,12 @@ final class TeamListViewController: UICollectionViewController {
     
     private func deleteTeam(indexPath: IndexPath) {
         guard let team = dataSource.itemIdentifier(for: indexPath) else { return }
-        var snapshot = dataSource.snapshot()
-        snapshot.deleteItems([team])
-        dataSource.apply(snapshot)
+        showSpinner()
+        viewModel.deleteTeam(team: team)
     }
     
     private func editTeam(indexPath: IndexPath) {
-        guard let team = dataSource.itemIdentifier(for: indexPath) else { return }
+        guard var team = dataSource.itemIdentifier(for: indexPath) else { return }
         UIAlertController.Builder()
             .withTitle("Update Team Title")
             .withTextField(true)
@@ -97,6 +103,12 @@ final class TeamListViewController: UICollectionViewController {
                     presentAlert(with: "Title cannot be empty")
                     return
                 }
+                
+                showSpinner()
+                team.title = title
+                viewModel.updateTitleTeam(team: team)
+                
+                viewModel.loadData()
             }
             .present(in: self)
     }

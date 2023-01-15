@@ -29,6 +29,8 @@ protocol PokemonDetailStore {
 
 protocol TeamListStore {
     func readTeams(userId: String) -> Future<[String : Team], Failure>
+    func deleteTeam(userId: String,team: Team) -> Future<Bool, Failure>
+    func updateTitleTeam(userId: String, team: Team) -> Future<Bool, Failure>
 }
 
 final class APIManager {
@@ -91,7 +93,7 @@ extension APIManager: PokemonListStore {
             let teamId = database.childByAutoId().key ?? UUID().uuidString
             do {
                 let data = try FirebaseEncoder().encode(model)
-                Database.database().reference().child(userId).child("teams").child(teamId).setValue(data)
+                database.child(userId).child("teams").child(teamId).setValue(data)
                 promise(.success(true))
             } catch {
                 promise(.failure(.APIError(error)))
@@ -122,6 +124,45 @@ extension APIManager: TeamListStore {
                     promise(.failure(.APIError(error)))
                 }
             })
+        }
+    }
+    
+    func deleteTeam(userId: String, team: Team) -> Future<Bool, Failure> {
+        return Future { [unowned self] promise in
+            guard let teamId = team.key else {
+                promise(.success(false))
+                return
+            }
+            
+            database.child(userId).child("teams").child(teamId).removeValue { error, _ in
+                if let _ = error {
+                    promise(.success(false))
+                } else {
+                    promise(.success(true))
+                }
+            }
+        }
+    }
+    
+    func updateTitleTeam(userId: String, team: Team) -> Future<Bool, Failure> {
+        return Future { [unowned self] promise in
+            guard let teamId = team.key else {
+                promise(.success(false))
+                return
+            }
+            
+            do {
+                let data = try FirebaseEncoder().encode(Team(title: team.title, pokemons: team.pokemons))
+                database.child(userId).child("teams").child(teamId).updateChildValues(data as! [AnyHashable : Any]) { error, _ in
+                    if let _ = error {
+                        promise(.success(false))
+                    } else {
+                        promise(.success(true))
+                    }
+                }
+            } catch {
+                promise(.success(false))
+            }
         }
     }
 }

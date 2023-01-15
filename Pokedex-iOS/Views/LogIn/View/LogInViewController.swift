@@ -8,10 +8,10 @@
 import UIKit
 import Combine
 
-class LogInViewController: UIViewController {
+class LogInViewController: UIViewController, Spinner {
 
     private var subscription: AnyCancellable?
-    private let viewModel: LogInViewModelRepresentable
+    private var viewModel: LogInViewModelRepresentable
     
     init(viewModel: LogInViewModelRepresentable) {
         self.viewModel = viewModel
@@ -25,21 +25,31 @@ class LogInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
-        bindUI()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        hideSpinner()
     }
     
     private func setUI() {
         navigationController?.isNavigationBarHidden = true
-    }
-    
-    private func bindUI() {
-        subscription = viewModel.errorSubject.sink { _ in
-        } receiveValue: { [unowned self] error in
-            presentAlert(with: error)
-        }
+        viewModel.delegate = self
     }
     
     @IBAction func didTapGoogleButton(_ sender: Any) {
+        showSpinner()
         viewModel.googleSignIn(self)
+    }
+}
+
+extension LogInViewController: LogInViewModelDelegate {
+    func success() {
+        hideSpinner()
+    }
+    
+    func error(_ errorMessage: String) {
+        hideSpinner()
+        presentAlert(with: errorMessage)
     }
 }

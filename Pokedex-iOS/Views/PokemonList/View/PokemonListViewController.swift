@@ -13,7 +13,7 @@ enum Mode {
     case notAddingTeam
 }
 
-final class PokemonListViewController: UICollectionViewController {
+final class PokemonListViewController: UICollectionViewController, Spinner {
     
     private enum Section: CaseIterable {
         case main
@@ -72,6 +72,7 @@ final class PokemonListViewController: UICollectionViewController {
         collectionView.register(PokemonCollectionViewCell.self)
         cancelButtonItem.isHidden = true
         doneButtonItem.isHidden = true
+        showSpinner()
         viewModel.loadData()
     }
     
@@ -82,9 +83,11 @@ final class PokemonListViewController: UICollectionViewController {
                 print("Received completion in VC", completion)
             case .failure(let error):
                 presentAlert(with: error)
+                hideSpinner()
             }
         } receiveValue: { [unowned self] pokemonEntrys in
             applySnapshot(pokemonEntrys: pokemonEntrys)
+            hideSpinner()
         }
     }
     
