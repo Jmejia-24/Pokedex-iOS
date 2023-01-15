@@ -38,7 +38,8 @@ extension PokemonListViewModel: PokemonListViewModelRepresentable {
     
     func saveTeam(title: String) {
         let userId = Auth.auth().currentUser!.uid
-        let team = Team(title: title, pokemons: selectedPokemons)
+        let id = UUID().uuidString
+        let team = Team(identifier: id, title: title, pokemons: selectedPokemons)
         
         store.saveTeam(userId: userId, model: team)
             .sink(receiveCompletion: { _ in }, receiveValue: { _ in })

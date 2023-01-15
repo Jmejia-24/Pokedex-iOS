@@ -36,6 +36,11 @@ final class TeamListViewModel<R: AppRouter> {
     init(store: TeamListStore = APIManager()) {
         self.store = store
     }
+    
+    private func reloadData() {
+        fetchedTeams = []
+        loadData()
+    }
 }
 
 extension TeamListViewModel: TeamListViewModelRepresentable {
@@ -45,11 +50,9 @@ extension TeamListViewModel: TeamListViewModelRepresentable {
     
     func loadData() {
         let recieved = { (response: [String : Team]) -> Void in
-            response.forEach { teamDict in
-                var team: Team = teamDict.value
-                team.key = teamDict.key
+            response.values.forEach { value in
                 DispatchQueue.main.async { [unowned self] in
-                    fetchedTeams.append(team)
+                    fetchedTeams.append(value as Team)
                 }
             }
         }
@@ -71,8 +74,7 @@ extension TeamListViewModel: TeamListViewModelRepresentable {
     func updateTitleTeam(team: Team) {
         let recieved = { [unowned self] (response: Bool) -> Void in
             if response {
-                fetchedTeams = []
-                loadData()
+                reloadData()
             } else {
                 errorSubject.send("The title of this team could not be updated")
             }
@@ -86,8 +88,7 @@ extension TeamListViewModel: TeamListViewModelRepresentable {
     func deleteTeam(team: Team) {
         let recieved = { [unowned self] (response: Bool) -> Void in
             if response {
-                fetchedTeams = []
-                loadData()
+                reloadData()
             } else {
                 errorSubject.send("Could not delete \(team.title)")
             }

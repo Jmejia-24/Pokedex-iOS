@@ -90,10 +90,9 @@ extension APIManager: PokedexListStore {
 extension APIManager: PokemonListStore {
     func saveTeam(userId: String, model: Team) -> Future<Bool, Failure> {
         return Future { [unowned self] promise in
-            let teamId = database.childByAutoId().key ?? UUID().uuidString
             do {
                 let data = try FirebaseEncoder().encode(model)
-                database.child(userId).child("teams").child(teamId).setValue(data)
+                database.child(userId).child("teams").child(model.identifier).setValue(data)
                 promise(.success(true))
             } catch {
                 promise(.failure(.APIError(error)))
@@ -129,12 +128,7 @@ extension APIManager: TeamListStore {
     
     func deleteTeam(userId: String, team: Team) -> Future<Bool, Failure> {
         return Future { [unowned self] promise in
-            guard let teamId = team.key else {
-                promise(.success(false))
-                return
-            }
-            
-            database.child(userId).child("teams").child(teamId).removeValue { error, _ in
+            database.child(userId).child("teams").child(team.identifier).removeValue { error, _ in
                 if let _ = error {
                     promise(.success(false))
                 } else {
@@ -146,14 +140,9 @@ extension APIManager: TeamListStore {
     
     func updateTitleTeam(userId: String, team: Team) -> Future<Bool, Failure> {
         return Future { [unowned self] promise in
-            guard let teamId = team.key else {
-                promise(.success(false))
-                return
-            }
-            
             do {
-                let data = try FirebaseEncoder().encode(Team(title: team.title, pokemons: team.pokemons))
-                database.child(userId).child("teams").child(teamId).updateChildValues(data as! [AnyHashable : Any]) { error, _ in
+                let data = try FirebaseEncoder().encode(team)
+                database.child(userId).child("teams").child(team.identifier).updateChildValues(data as! [AnyHashable : Any]) { error, _ in
                     if let _ = error {
                         promise(.success(false))
                     } else {

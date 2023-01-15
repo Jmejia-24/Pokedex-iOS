@@ -9,11 +9,12 @@ import Foundation
 
 struct Team: Codable, Identifiable {
     let id = UUID().uuidString
-    var key: String?
+    var identifier: String
     var title: String
     var pokemons: [Pokemon]
     
     enum CodingKeys: String, CodingKey {
+        case identifier
         case title
         case pokemons
     }
