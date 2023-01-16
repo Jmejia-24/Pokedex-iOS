@@ -565,6 +565,7 @@
 				C8D0F453296F40D300C5F74D /* Sources */,
 				C8D0F454296F40D300C5F74D /* Frameworks */,
 				C8D0F455296F40D300C5F74D /* Resources */,
+				C8BC9D9C297524AB00D90CF9 /* FireBase Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -642,6 +643,29 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C8BC9D9C297524AB00D90CF9 /* FireBase Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = "FireBase Crashlytics";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C8D0F453296F40D300C5F74D /* Sources */ = {
@@ -840,6 +864,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = U2YUTKJJV6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Pokedex-iOS/Info.plist";
@@ -867,6 +892,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = U2YUTKJJV6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Pokedex-iOS/Info.plist";
