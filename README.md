@@ -14,6 +14,7 @@ TransitionDelegate se uso para consolidar la lógica del módulo perteneciente a
 * Soporte para modo landscape y portrait.
 * Soporte para modo claro y oscuro.
 * Manejo de errores
+* Integracion de Crashlytics para reporte de errores
 
 **Videos demostrativos**
 
