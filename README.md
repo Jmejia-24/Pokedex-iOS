@@ -55,6 +55,7 @@ Para poder abrir el proyecto es nesesario una version de Xcode 14.0.1 o superior
 * GoogleSignIn
 * CodableFirebase
 * FacebookLogin
+* IQKeyboardManagerSwift
 
 # Tecnologias
 * Xcode 14.0.1
