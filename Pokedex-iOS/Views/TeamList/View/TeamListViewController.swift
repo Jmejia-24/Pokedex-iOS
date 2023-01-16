@@ -63,7 +63,7 @@ final class TeamListViewController: UICollectionViewController, Spinner {
     private let registerTeamCell = UICollectionView.CellRegistration<UICollectionViewListCell, Team> { cell, indexPath, team in
         var configuration = cell.defaultContentConfiguration()
         configuration.text = team.title.capitalized
-        configuration.secondaryText = "Composed of \(team.pokemons.count) Pokémon"
+        configuration.secondaryText = "Region: \(team.region)\nComposed of \(team.pokemons.count) Pokémon"
         configuration.prefersSideBySideTextAndSecondaryText = false
         configuration.textToSecondaryTextVerticalPadding = 8
         configuration.textToSecondaryTextHorizontalPadding = 8

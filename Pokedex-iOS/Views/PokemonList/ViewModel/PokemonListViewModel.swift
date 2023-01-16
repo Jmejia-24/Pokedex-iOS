@@ -25,6 +25,7 @@ final class PokemonListViewModel<R: AppRouter> {
     private var cancellables = Set<AnyCancellable>()
     private let store: PokemonListStore
     private let pokedex: Pokedex
+    private var region = ""
     var currentMode: Mode = .notAddingTeam
     var selectedPokemons = [Pokemon]()
     
@@ -39,7 +40,7 @@ extension PokemonListViewModel: PokemonListViewModelRepresentable {
     func saveTeam(title: String) {
         let userId = Auth.auth().currentUser!.uid
         let id = UUID().uuidString
-        let team = Team(identifier: id, title: title, pokemons: selectedPokemons)
+        let team = Team(identifier: id, title: title, region: region, pokemons: selectedPokemons)
         
         store.saveTeam(userId: userId, model: team)
             .sink(receiveCompletion: { _ in }, receiveValue: { _ in })
@@ -53,6 +54,7 @@ extension PokemonListViewModel: PokemonListViewModelRepresentable {
     func loadData() {
         let recieved = { (response: PokemonResponse) -> Void in
             DispatchQueue.main.async { [unowned self] in
+                region = response.region.name
                 pokemonListSubject.send(response.pokemonEntry)
             }
         }

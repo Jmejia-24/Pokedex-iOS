@@ -11,11 +11,13 @@ struct Team: Codable, Identifiable {
     let id = UUID().uuidString
     var identifier: String
     var title: String
+    var region: String
     var pokemons: [Pokemon]
     
     enum CodingKeys: String, CodingKey {
         case identifier
         case title
+        case region
         case pokemons
     }
 }
