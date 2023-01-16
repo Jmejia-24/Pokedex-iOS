@@ -78,6 +78,7 @@
 		C8D0F4CD296FEA6A00C5F74D /* PokedexListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8D0F4CC296FEA6A00C5F74D /* PokedexListViewController.swift */; };
 		C8D0F4CF296FEFA600C5F74D /* PokedexResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8D0F4CE296FEFA600C5F74D /* PokedexResponse.swift */; };
 		C8D0F4D1296FEFB800C5F74D /* Pokedex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8D0F4D0296FEFB800C5F74D /* Pokedex.swift */; };
+		C8F37915297544A20071FDD6 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C8F37914297544A20071FDD6 /* IQKeyboardManagerSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -155,6 +156,7 @@
 				C8D0F493296F809F00C5F74D /* FirebaseDatabaseSwift in Frameworks */,
 				C8D0F491296F809F00C5F74D /* FirebaseDatabase in Frameworks */,
 				C8D0F48B296F809F00C5F74D /* FirebaseAnalyticsSwift in Frameworks */,
+				C8F37915297544A20071FDD6 /* IQKeyboardManagerSwift in Frameworks */,
 				C8BC9D9B2974DCC000D90CF9 /* FacebookLogin in Frameworks */,
 				C8D0F498296F96EA00C5F74D /* GoogleSignInSwift in Frameworks */,
 				C8D0F48F296F809F00C5F74D /* FirebaseCrashlytics in Frameworks */,
@@ -584,6 +586,7 @@
 				C824C36B297298BB00662885 /* CodableFirebase */,
 				C8BC9D982974DCC000D90CF9 /* FacebookCore */,
 				C8BC9D9A2974DCC000D90CF9 /* FacebookLogin */,
+				C8F37914297544A20071FDD6 /* IQKeyboardManagerSwift */,
 			);
 			productName = "Pokedex-iOS";
 			productReference = C8D0F457296F40D300C5F74D /* Pokedex-iOS.app */;
@@ -618,6 +621,7 @@
 				C8D0F494296F96EA00C5F74D /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				C824C36A297298BB00662885 /* XCRemoteSwiftPackageReference "CodableFirebase" */,
 				C8BC9D972974DCC000D90CF9 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
+				C8F37913297544A20071FDD6 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 			);
 			productRefGroup = C8D0F458296F40D300C5F74D /* Products */;
 			projectDirPath = "";
@@ -969,6 +973,14 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		C8F37913297544A20071FDD6 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager.git";
+			requirement = {
+				kind = exactVersion;
+				version = 6.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1026,6 +1038,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C8D0F494296F96EA00C5F74D /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		};
+		C8F37914297544A20071FDD6 /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C8F37913297544A20071FDD6 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
