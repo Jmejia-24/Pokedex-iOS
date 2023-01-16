@@ -41,6 +41,11 @@ class LogInViewController: UIViewController, Spinner {
         showSpinner()
         viewModel.googleSignIn(self)
     }
+    
+    @IBAction func didTapFacebookButton(_ sender: Any) {
+        showSpinner()
+        viewModel.facebookSignIn(self)
+    }
 }
 
 extension LogInViewController: LogInViewModelDelegate {
@@ -50,6 +55,8 @@ extension LogInViewController: LogInViewModelDelegate {
     
     func error(_ errorMessage: String) {
         hideSpinner()
-        presentAlert(with: errorMessage)
+        if !errorMessage.isEmpty {
+            presentAlert(with: errorMessage)
+        }
     }
 }

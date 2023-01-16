@@ -12,6 +12,20 @@
 				<string>com.googleusercontent.apps.547746170119-i277ib0iu8iuea67av80mbp66ee60o9n</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1125525051493259</string>
+			</array>
+		</dict>
 	</array>
+	<key>FacebookClientToken</key>
+	<string>cb3faa1486ef6b3c0bdea07f14adca3f</string>
+	<key>FacebookAppID</key>
+	<string>1125525051493259</string>
+	<key>FacebookDisplayName</key>
+	<string>Pokedex</string>
 </dict>
 </plist>

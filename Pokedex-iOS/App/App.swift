@@ -16,11 +16,11 @@ final class App {
 extension App: Coordinator {
     func start() {
         
-        var isUserSession: Bool {
-            !UserDefaultsManager.shared.email.isEmpty && !UserDefaultsManager.shared.provider.isEmpty
+        var isSession: Bool {
+            !UserDefaultsManager.shared.provider.isEmpty
         }
         
-        process(route: isUserSession ? .showHome : .showLogIn)
+        process(route: isSession ? .showHome : .showLogIn)
     }
 }
 

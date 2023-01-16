@@ -37,6 +37,8 @@
 		C87287442972F78D004680D9 /* PokemonTeamCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87287432972F78D004680D9 /* PokemonTeamCoordinator.swift */; };
 		C87287462972F79D004680D9 /* PokemonTeamViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87287452972F79D004680D9 /* PokemonTeamViewModel.swift */; };
 		C87287482972F7A9004680D9 /* PokemonTeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87287472972F7A9004680D9 /* PokemonTeamViewController.swift */; };
+		C8BC9D992974DCC000D90CF9 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = C8BC9D982974DCC000D90CF9 /* FacebookCore */; };
+		C8BC9D9B2974DCC000D90CF9 /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = C8BC9D9A2974DCC000D90CF9 /* FacebookLogin */; };
 		C8D0F45B296F40D300C5F74D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8D0F45A296F40D300C5F74D /* AppDelegate.swift */; };
 		C8D0F464296F40D400C5F74D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8D0F463296F40D400C5F74D /* Assets.xcassets */; };
 		C8D0F467296F40D400C5F74D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8D0F465296F40D400C5F74D /* LaunchScreen.storyboard */; };
@@ -149,9 +151,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				C824C36C297298BB00662885 /* CodableFirebase in Frameworks */,
+				C8BC9D992974DCC000D90CF9 /* FacebookCore in Frameworks */,
 				C8D0F493296F809F00C5F74D /* FirebaseDatabaseSwift in Frameworks */,
 				C8D0F491296F809F00C5F74D /* FirebaseDatabase in Frameworks */,
 				C8D0F48B296F809F00C5F74D /* FirebaseAnalyticsSwift in Frameworks */,
+				C8BC9D9B2974DCC000D90CF9 /* FacebookLogin in Frameworks */,
 				C8D0F498296F96EA00C5F74D /* GoogleSignInSwift in Frameworks */,
 				C8D0F48F296F809F00C5F74D /* FirebaseCrashlytics in Frameworks */,
 				C8D0F48D296F809F00C5F74D /* FirebaseAuth in Frameworks */,
@@ -577,6 +581,8 @@
 				C8D0F495296F96EA00C5F74D /* GoogleSignIn */,
 				C8D0F497296F96EA00C5F74D /* GoogleSignInSwift */,
 				C824C36B297298BB00662885 /* CodableFirebase */,
+				C8BC9D982974DCC000D90CF9 /* FacebookCore */,
+				C8BC9D9A2974DCC000D90CF9 /* FacebookLogin */,
 			);
 			productName = "Pokedex-iOS";
 			productReference = C8D0F457296F40D300C5F74D /* Pokedex-iOS.app */;
@@ -610,6 +616,7 @@
 				C8D0F487296F809F00C5F74D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				C8D0F494296F96EA00C5F74D /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				C824C36A297298BB00662885 /* XCRemoteSwiftPackageReference "CodableFirebase" */,
+				C8BC9D972974DCC000D90CF9 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 			);
 			productRefGroup = C8D0F458296F40D300C5F74D /* Products */;
 			projectDirPath = "";
@@ -912,6 +919,14 @@
 				minimumVersion = 0.2.2;
 			};
 		};
+		C8BC9D972974DCC000D90CF9 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
 		C8D0F487296F809F00C5F74D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -935,6 +950,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C824C36A297298BB00662885 /* XCRemoteSwiftPackageReference "CodableFirebase" */;
 			productName = CodableFirebase;
+		};
+		C8BC9D982974DCC000D90CF9 /* FacebookCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C8BC9D972974DCC000D90CF9 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookCore;
+		};
+		C8BC9D9A2974DCC000D90CF9 /* FacebookLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C8BC9D972974DCC000D90CF9 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookLogin;
 		};
 		C8D0F488296F809F00C5F74D /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;

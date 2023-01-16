@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseCore
 import GoogleSignIn
+import FacebookLogin
 
 @UIApplicationMain final class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -25,6 +26,8 @@ import GoogleSignIn
         GIDSignIn.sharedInstance.configuration = config
         
         AppStyle.configureAppearance()
+        
+        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
         app.start()
         return true
