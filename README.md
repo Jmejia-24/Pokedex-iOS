@@ -13,6 +13,13 @@ TransitionDelegate se uso para consolidar la lógica del módulo perteneciente a
 * Clean Code.
 * Soporte para modo landscape y portrait.
 * Soporte para modo claro y oscuro.
+* Manejo de errores
+
+**Videos demostrativos**
+
+https://user-images.githubusercontent.com/100188413/212604424-093e38f4-fba0-4b48-9e99-587f32a516d2.mp4
+
+https://user-images.githubusercontent.com/100188413/212605090-66c5a235-7edf-4d56-bd12-8b1516c2fbe1.mp4
 
 # Intrucciones
 1. Clone o descargue este repositorio.
@@ -22,7 +29,7 @@ TransitionDelegate se uso para consolidar la lógica del módulo perteneciente a
 5. Ya esta listo el proyecto para ejecutarse.
 
 **Usuarios de prueba facebook**
-Debido a que en la consola de facebook el proeyecto aun se encuentra en desarrollo dejo usuarios de pruebas.
+Debido a que en la consola de facebook, el proyecto se encuentra en modo desarrollo, dejo usuarios de pruebas.
 Para todos los correos la contraseña es: **Test-1234**
 
 - eeezboqdqq_1673825782@tfbnw.net
