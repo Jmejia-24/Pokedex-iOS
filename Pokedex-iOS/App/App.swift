@@ -7,6 +7,7 @@
 
 import UIKit
 import GoogleSignIn
+import FacebookLogin
 
 final class App {
     var navigationController = UINavigationController()
@@ -33,6 +34,8 @@ extension App: AppRouter {
         switch UserDefaultsManager.shared.provider {
         case Provider.google.rawValue:
             GIDSignIn.sharedInstance.signOut()
+        case Provider.facebook.rawValue:
+            LoginManager().logOut()
         default:
             break
         }
