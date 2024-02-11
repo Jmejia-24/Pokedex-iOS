@@ -1,63 +1,73 @@
-# **Pokedex-iOS**
+# Pokedex-iOS
 
-# Arquitectura MVVM+Router
-El concepto enrutador(router) de aplicaciones se usó para manejar la lógica de navegación de los controladores de vista, las transiciones manejadas a través de un coordinador de la aplicación.
-TransitionDelegate se uso para consolidar la lógica del módulo perteneciente a un flujo de trabajo particular, haciendo que el código sea modular y desacoplado, además de adherirse al principio SOLID de responsabilidad única, MVVM se usó para abstraer el código del modelo del controlador de vista en un objeto separado que a su vez facilita las pruebas(UITest y UniTest).
+![Swift Version](https://img.shields.io/badge/Swift-5.0-F16D39.svg?style=flat)
+![Platform](https://img.shields.io/badge/Platform-iOS-000000.svg?style=flat)
+![Xcode Version](https://img.shields.io/badge/Xcode-14.0.1-blue.svg?style=flat)
 
-# Descripción
-* Este proyecto es 100% swift.
-* Uso de Combine para llamados al backend.
-* Cache de imagen.
-* URLSession para el manejo de api rest.
-* Persistencia de datos con Realtime Database de Firebase.
-* Clean Code.
-* Soporte para modo landscape y portrait.
-* Soporte para modo claro y oscuro.
-* Manejo de errores
-* Integracion de Crashlytics para reporte de errores
+## Table of Contents
+- [Introduction](#introduction)
+- [Architecture](#architecture)
+- [Characteristics](#characteristics)
+- [Features](#features)
+- [Demonstration](#demonstration)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Swift Package Manager (SPM)](#swift-package-manager-spm)
 
-**Videos demostrativos**
+## Introduction
+Pokedex-iOS is a comprehensive app for Pokémon enthusiasts, providing an interactive interface to explore regions, discover Pokédexes, and manage Pokémon teams. This project is entirely written in Swift and follows modern best practices and design patterns.
 
-https://user-images.githubusercontent.com/100188413/212604424-093e38f4-fba0-4b48-9e99-587f32a516d2.mp4
+## Architecture
+We use MVVM+Router for a clear separation of business logic and UI, improving code maintainability and testing. MVVM facilitates the abstraction of data models from the view controller, while 'Routers' manage navigation and transitions in a centralized and modular way.
 
-https://user-images.githubusercontent.com/100188413/212605090-66c5a235-7edf-4d56-bd12-8b1516c2fbe1.mp4
+## Characteristics
+- **100% Swift 5**: Utilizing the latest language capabilities.
+- **Combine**: Reactive event and server call management.
+- **Image Caching**: Improved efficiency in image loading and display.
+- **URLSession**: Robust communication with REST APIs.
+- **Firebase Realtime Database**: Real-time data storage and synchronization.
+- **Clean Code**: Structured and easy-to-maintain code.
+- **Orientation Support**: Functional in landscape and portrait modes.
+- **Color Modes**: Compatible with light and dark themes.
+- **Error Handling**: Robust strategies for an enhanced UX.
+- **Crashlytics**: Error monitoring and application stability.
 
-# Intrucciones
-1. Clone o descargue este repositorio.
-2. Navegar a la ruta donde clono o descargo el repo
-3. Abrir Pokedex-iOS.xcodeproj
-4. Esperar a que descarguen los SPM
-5. Ya esta listo el proyecto para ejecutarse.
+## Features
+- **List of regions**: Explore the various regions of the Pokémon world.
+- **List of Pokédexes by region**: Discover the Pokédexes associated with each region.
+- **List of Pokémon by region**: Find and learn about the Pokémon in each area.
+- **Pokémon Teams**: Create and save custom teams with 3 to 6 Pokémon.
+- **Cloud Storage**: Save and synchronize your teams via Firebase.
+- **Sidebar Menu**: Intuitive navigation between application modules.
 
-**Usuarios de prueba facebook**
-Debido a que en la consola de facebook, el proyecto se encuentra en modo desarrollo, dejo usuarios de pruebas.
-Para todos los correos la contraseña es: **Test-1234**
+## Demonstration
+See how the app works through the following demonstration videos:
 
-- eeezboqdqq_1673825782@tfbnw.net
-- ivmgrrobgm_1673825782@tfbnw.net
-- slhsdfxlnn_1673825782@tfbnw.net
-- hybmzpqtmd_1673825782@tfbnw.net
+[![Pokedex Demo](https://user-images.githubusercontent.com/100188413/212604424-093e38f4-fba0-4b48-9e99-587f32a516d2.mp4)](https://user-images.githubusercontent.com/100188413/212604424-093e38f4-fba0-4b48-9e99-587f32a516d2.mp4)
 
-**Nota:**
-Para poder abrir el proyecto es nesesario una version de Xcode 14.0.1 o superior.
+[![Pokedex Demo](https://user-images.githubusercontent.com/100188413/212605090-66c5a235-7edf-4d56-bd12-8b1516c2fbe1.mp4)](https://user-images.githubusercontent.com/100188413/212605090-66c5a235-7edf-4d56-bd12-8b1516c2fbe1.mp4)
 
-# Funcionalidades agregadas
-* Lista de regiones
-* Lista de pokedexes que pertenecen a una region
-* Lista de pokemones que pertenecen a una region
-* Crear y guardar equipos de 3 a 6 pokemones
-* Guardar los equipos en la nube
-* Menu lateral para navegar entre modulos.
+## Prerequisites
+- Xcode 14.0.1 or higher.
+- iOS 16.0+ SDK.
 
-# SPMs
+## Installation
+Follow these steps to install and run the project:
 
-* Firebase
-* GoogleSignIn
-* CodableFirebase
-* FacebookLogin
-* IQKeyboardManagerSwift
+```bash
+git clone https://github.com/Jmejia-24/Pokedex-iOS.git
+cd Pokedex-iOS
+open Pokedex-iOS.xcodeproj
+# Wait for Xcode to install the necessary SPMs.
+```
 
-# Tecnologias
-* Xcode 14.0.1
-* Swift 5
-* iOS 16.0+
+## Swift Package Manager (SPM)
+The project uses SPM to manage dependencies. Here is the list of included packages:
+
+- `Firebase`: Authentication and cloud storage.
+- `GoogleSignIn`: Login with Google accounts.
+- `CodableFirebase`: Serialization and deserialization of Firebase data.
+- `FacebookLogin`: Integration with Facebook login.
+- `IQKeyboardManagerSwift`: Automatic keyboard management.
+
+With the project open in Xcode, you can compile and run the app on an iOS simulator or real device by selecting the appropriate scheme and pressing the Run button.
